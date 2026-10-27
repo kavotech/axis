@@ -3,7 +3,6 @@ import { Resend } from "resend";
 import { DOCUMENTS, QUANTITY_UNITS } from "@/data/quote-options";
 import { SITE } from "@/data/site";
 import type { ContactData, QuoteData } from "@/lib/schemas";
-import type { StoredFile } from "./storage";
 
 // ── Configuration ────────────────────────────────────────────────────────────
 
@@ -189,7 +188,7 @@ function quoteText(q: QuoteData) {
 
 // ── Public senders ───────────────────────────────────────────────────────────
 
-export async function sendQuoteEmails(opts: { reference: string; quote: QuoteData; files: StoredFile[]; attachments: Attachment[]; review: boolean; score: number | null; stored: boolean }) {
+export async function sendQuoteEmails(opts: { reference: string; quote: QuoteData; files: { name: string; size: number }[]; attachments: Attachment[]; review: boolean; score: number | null }) {
   const { reference, quote, files } = opts;
   const products = quote.items.map((i) => i.productName).join(", ");
   const flag = opts.review ? `<div style="background:#fbeeea;border:1px solid #e9b8ad;color:#a33a2b;border-radius:8px;padding:10px 14px;margin:0 0 18px;font-size:13px;"><strong>Review flagged:</strong> low reCAPTCHA confidence (score ${opts.score ?? "n/a"}). Verify the buyer before engaging.</div>` : "";
@@ -199,7 +198,7 @@ export async function sendQuoteEmails(opts: { reference: string; quote: QuoteDat
     preheader: `${quote.buyer.company} — ${products}`,
     body: `${h("New quotation request")}${refBox(reference)}${flag}
 ${p(`<strong>${esc(quote.buyer.company)}</strong> (${esc(quote.buyer.country)}) has requested a quotation for <strong>${esc(products)}</strong>.`)}
-${p(`Reply directly to this email to respond to ${esc(quote.buyer.fullName)}.${opts.stored ? " The enquiry and any files are stored securely in the enquiries database." : ""}`)}
+${p(`Reply directly to this email to respond to ${esc(quote.buyer.fullName)}. Any uploaded files are attached.`)}
 ${quoteSections(quote, files)}`,
   });
 

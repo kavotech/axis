@@ -996,7 +996,7 @@ export function QuoteWizard() {
               )}
               <div className="note" style={{ marginTop: 22 }}>
                 <Icon name="shield" size={20} />
-                <span>Files are checked on our server, stored privately and only accessible to the Axis Agro team handling your enquiry.</span>
+                <span>Files are checked on our server and sent directly to the Axis Agro team handling your enquiry. They are not published or stored on this website.</span>
               </div>
             </div>
           )}

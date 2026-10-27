@@ -19,9 +19,8 @@ npm run build
 | `src/data/` | All content: site details, categories, products, services, insights, quote options |
 | `src/components/` | Layout, UI primitives, icons, catalogue, quote wizard, contact form |
 | `src/app/` | Routes (`/products/[slug]` serves both category and product pages) |
-| `src/app/api/quote`, `src/app/api/contact` | Server routes: validation, reCAPTCHA, rate limiting, storage, email |
-| `src/lib/server/` | Server-only helpers (Resend, reCAPTCHA, Supabase, security) |
-| `supabase/migrations/` | Database tables and private upload bucket for enquiries |
+| `src/app/api/quote`, `src/app/api/contact` | Server routes: validation, reCAPTCHA, rate limiting, email |
+| `src/lib/server/` | Server-only helpers (Resend, reCAPTCHA, security) |
 | `public/images/` | Optimised WebP photography (company photos + Unsplash-licensed images) |
 
 To add a product, append it to `src/data/products.ts`; its page, catalogue card, sitemap entry and quote-form option are generated automatically.
@@ -39,14 +38,8 @@ Set in Vercel → Project → Settings → Environment Variables (see `.env.exam
 | `EMAIL_FROM_ADDRESS` | server | sender on a Resend-verified domain (falls back to `SENDER_EMAIL`) |
 | `QUOTE_NOTIFICATION_EMAIL` | server | comma-separated (falls back to `ADMIN_EMAIL_1`, then info@axisagro.co.uk) |
 | `CONTACT_NOTIFICATION_EMAIL` | server | comma-separated (falls back to the quote recipients) |
-| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | server | persistent enquiry storage and private uploads |
-| `SUPABASE_UPLOAD_BUCKET` | server | optional, default `quote-uploads` |
 
-Submissions are accepted when at least one of storage or email is configured. Without Supabase, uploaded files are attached to the internal notification email instead of being stored.
-
-## Storage setup
-
-Run `supabase/migrations/20261027000000_enquiries.sql` against the project (SQL editor or `supabase db push`). It creates `quote_enquiries` and `contact_enquiries` with RLS enabled and no public policies, and a private `quote-uploads` bucket. Review enquiries in the Supabase dashboard.
+Enquiries are delivered by email only — there is no database. The team receives a full summary (with any uploaded files attached) and the buyer receives an acknowledgement with their reference. If Resend is not configured or rejects the send, the visitor sees an error asking them to email info@axisagro.co.uk; nothing is silently lost.
 
 ## Reference material
 

@@ -1,9 +1,9 @@
 import "server-only";
-import { createHash, randomBytes } from "node:crypto";
+import { randomBytes } from "node:crypto";
 
 /**
  * Best-effort, per-instance sliding-window rate limiter. Serverless instances do not
- * share memory, so persistent storage applies a second, global check when available.
+ * share memory; reCAPTCHA scoring and the honeypot/timing checks cover the remainder.
  */
 const buckets = new Map<string, number[]>();
 
@@ -25,12 +25,6 @@ export function rateLimit(key: string, limit: number, windowMs: number) {
 export function clientIp(req: Request) {
   const fwd = req.headers.get("x-forwarded-for");
   return (fwd?.split(",")[0] || req.headers.get("x-real-ip") || "unknown").trim();
-}
-
-/** Salted hash so raw IP addresses are never stored. */
-export function hashIp(ip: string) {
-  const salt = process.env.IP_HASH_SALT || process.env.RECAPTCHA_SECRET_KEY || "axis-agro";
-  return createHash("sha256").update(`${salt}:${ip}`).digest("hex").slice(0, 32);
 }
 
 /** Same-origin check for browser POSTs. */

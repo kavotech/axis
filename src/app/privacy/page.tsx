@@ -36,7 +36,7 @@ export default function PrivacyPage() {
               <strong>Contact messages:</strong> name, company, email, phone, country, topic and message.
             </li>
             <li>
-              <strong>Technical data:</strong> a one-way hashed form of your IP address (used for abuse prevention and rate limiting), the reCAPTCHA risk score and standard server logs kept by our hosting
+              <strong>Technical data:</strong> your IP address, used briefly in memory for rate limiting and never stored by us, the reCAPTCHA risk score and standard server logs kept by our hosting
               provider.
             </li>
           </ul>
@@ -52,8 +52,7 @@ export default function PrivacyPage() {
           <h2>Who we share it with</h2>
           <ul>
             <li>Vercel Inc. (website hosting)</li>
-            <li>Resend (transactional email delivery of notifications and acknowledgements)</li>
-            <li>Supabase (secure database and private file storage for enquiries), where enabled</li>
+            <li>Resend (email delivery — enquiries, including any files you upload, are delivered to our team by email and held in our business mailbox)</li>
             <li>Google (reCAPTCHA spam protection — subject to Google&rsquo;s privacy policy)</li>
             <li>Logistics, inspection or sourcing partners, only where needed to prepare your quotation and with the minimum information necessary</li>
           </ul>

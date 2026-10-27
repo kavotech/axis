@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { contactSchema, envelopeSchema, issuesToMap } from "@/lib/schemas";
 import { emailConfigured, sendContactEmails } from "@/lib/server/email";
 import { recaptchaMessage, verifyRecaptcha } from "@/lib/server/recaptcha";
-import { clientIp, hashIp, makeReference, rateLimit, sameOrigin, tooFast } from "@/lib/server/security";
-import { markEmailStatus, recentSubmissions, saveContact, storageConfigured } from "@/lib/server/storage";
+import { clientIp, makeReference, rateLimit, sameOrigin, tooFast } from "@/lib/server/security";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -41,35 +40,10 @@ export async function POST(req: Request) {
     return fail(captcha.reason === "not-configured" || captcha.reason === "unavailable" ? 503 : 400, recaptchaMessage(captcha.reason));
   }
 
-  const ipHash = hashIp(ip);
-  if ((await recentSubmissions("contact_enquiries", ipHash, 60)) >= 8) return fail(429, "Too many messages from your network. Please email us directly.");
-
-  const canStore = storageConfigured();
-  if (!canStore && !emailConfigured()) return fail(503, "Online messages are temporarily unavailable. Please email info@axisagro.co.uk.");
-
-  let stored = false;
-  if (canStore) {
-    try {
-      stored = await saveContact({
-        reference,
-        name: data.name,
-        email: data.email,
-        company: data.company,
-        topic: data.topic,
-        payload: data,
-        recaptcha_score: captcha.score,
-        needs_review: captcha.review,
-        ip_hash: ipHash,
-      });
-    } catch (err) {
-      console.error("[contact] storage failed", err);
-      return fail(500, "We could not save your message. Please try again or email info@axisagro.co.uk.");
-    }
-  }
+  if (!emailConfigured()) return fail(503, "Online messages are temporarily unavailable. Please email info@axisagro.co.uk.");
 
   const mail = await sendContactEmails({ reference, data, review: captcha.review, score: captcha.score });
-  if (!stored && !mail.notified) return fail(502, "Your message could not be delivered. Please email info@axisagro.co.uk.");
-  if (stored) await markEmailStatus("contact_enquiries", reference, mail);
+  if (!mail.notified) return fail(502, "Your message could not be delivered. Please email info@axisagro.co.uk.");
 
   return NextResponse.json({ ok: true, reference, acknowledged: mail.acknowledged });
 }
