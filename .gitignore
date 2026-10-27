@@ -1,4 +1,27 @@
+# dependencies
 node_modules/
+
+# next.js / build
+.next/
+out/
 dist/
+*.tsbuildinfo
+next-env.d.ts
+
+# env & secrets
+.env
+.env*
+!.env.example
+.vercel
+
+# local data
+.data/
+
+# third-party reference mirrors (never commit)
+olympicfruit/
+olympicfruit-full/
+
+# misc
 .DS_Store
 *.local
+*.log
