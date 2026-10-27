@@ -2,7 +2,7 @@ export const SITE = {
   name: "Axis Agro International Ltd",
   legalName: "Axis Agro International Limited",
   shortName: "Axis Agro",
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://axisagro.co.uk").replace(/\/$/, ""),
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://www.axisagro.co.uk").replace(/\/$/, ""),
   tagline: "Your Direct Link for Ugandan Fresh Produce in the UK Market.",
   secondaryTagline: "Fresh Ugandan Produce. Packed. Certified. Delivered Worldwide.",
   description:
