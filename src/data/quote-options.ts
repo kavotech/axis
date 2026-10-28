@@ -93,8 +93,14 @@ export const COFFEE_GRADES = [
   "Robusta Screen 18",
   "Robusta Screen 15",
   "Robusta Screen 12",
+  "Robusta FAQ",
+  "Natural Robusta (other screens)",
+  "Washed Robusta",
   "Arabica AA / AAA",
   "Arabica AB",
+  "Bugisu washed Arabica",
+  "Wugar (washed Arabica)",
+  "Drugar (natural Arabica)",
   "Other (please specify)",
 ] as const;
 

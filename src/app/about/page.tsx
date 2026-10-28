@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/Icon";
+import { AboutExtras } from "@/components/PageExtras";
 import { Band, PageTop, Reveal } from "@/components/ui";
 import { VALUES } from "@/data/content";
 import { SITE } from "@/data/site";
@@ -194,6 +195,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <AboutExtras />
     </div>
   );
 }

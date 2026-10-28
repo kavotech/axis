@@ -73,7 +73,7 @@ export function Header() {
                   >
                     {item.label} <Icon name="chevron" strokeWidth={5} />
                   </button>
-                  <div className="dropdown">
+                  <div className={item.wide ? "dropdown dropdown--wide" : "dropdown"}>
                     {item.children.map((c) => (
                       <Link key={c.href + c.label} href={c.href} aria-current={pathname === c.href ? "page" : undefined} tabIndex={open === item.label ? 0 : -1} onBlur={leave}>
                         {c.label}

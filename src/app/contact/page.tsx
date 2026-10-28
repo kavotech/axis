@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { Special } from "@/components/InfoPageView";
 import { Band, JsonLd, PageTop } from "@/components/ui";
 import { SITE } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
@@ -38,7 +39,7 @@ export default function ContactPage() {
           <p key="b">
             T <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
             <br />
-            E <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            E <a href={`mailto:${SITE.emails.general}`}>{SITE.emails.general}</a>
             <br />
             WhatsApp {SITE.phone}
           </p>,
@@ -54,7 +55,15 @@ export default function ContactPage() {
         &lsquo;Let&rsquo;s start the conversation&rsquo;
       </Band>
 
-      <section style={{ paddingTop: 70 }}>
+      <section className="section" style={{ paddingBottom: 0 }}>
+        <div className="wrap">
+          <h2 className="section-title section-title--center">Contact directory</h2>
+          <p className="center-text">Choose the mailbox that best fits your enquiry. Telephone: {SITE.phone}.</p>
+        </div>
+      </section>
+      <Special kind="directory" />
+
+      <section style={{ paddingTop: 30 }}>
         <details className="acc-row" open>
           <summary className="wrap">Directors</summary>
           <div className="wrap acc-row__body">

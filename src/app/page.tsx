@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HomeExtras } from "@/components/HomeExtras";
 import { LogoMark } from "@/components/Logo";
 import { Band, Circles, Reveal } from "@/components/ui";
 import { SITE } from "@/data/site";
@@ -79,6 +80,9 @@ export default function HomePage() {
           { href: "/get-a-quote", icon: "document", title: "Get a quote", text: "Tell us exactly what you need to source" },
         ]}
       />
+
+      {/* 5+ — Expanded content */}
+      <HomeExtras />
     </div>
   );
 }

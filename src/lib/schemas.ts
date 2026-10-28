@@ -157,7 +157,7 @@ export const contactSchema = z.object({
     .refine((v) => !v || /^\+?[0-9 ()\-.]{6,30}$/.test(v), "Enter a valid phone number"),
   country: optional(80),
   topic: enumOf(
-    ["General enquiry", "Product availability", "Supplier / sourcing partnership", "Logistics & documentation", "Media or other"] as const,
+    ["General enquiry", "Product availability", "Supplier / sourcing partnership", "Logistics & documentation", "Leadership / strategic partnership", "Media or other"] as const,
     "a topic",
   ),
   message: text(4000).min(10, "Please add a little more detail (at least 10 characters)"),

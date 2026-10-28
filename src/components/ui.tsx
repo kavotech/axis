@@ -192,6 +192,20 @@ export function Circles({ items, className = "" }: { items: CircleItem[]; classN
   );
 }
 
+export function ProductThumb({ product, size = 300 }: { product: Product; size?: number }) {
+  return product.image ? (
+    <Image src={product.image} alt={product.imageAlt} width={size} height={size} sizes="150px" />
+  ) : (
+    <span className="cutout__icon" role="img" aria-label={product.imageAlt}>
+      <Icon name={product.icon} strokeWidth={2} />
+    </span>
+  );
+}
+
+export function StatusBadge({ status }: { status: Product["status"] }) {
+  return <span className={`status status--${status}`}>{status === "core" ? "Core range" : "Sourcing enquiry"}</span>;
+}
+
 export function CutoutGrid({ products, ring }: { products: Product[]; ring?: string }) {
   return (
     <div className="product-range__grid">
@@ -199,14 +213,33 @@ export function CutoutGrid({ products, ring }: { products: Product[]; ring?: str
         <Reveal key={p.slug} delay={(i % 4) * 0.06}>
           <Link href={`/products/${p.slug}`} className="cutout" style={ring ? ({ "--ring": ring } as CSSProperties) : undefined}>
             <span className="cutout__img">
-              <Image src={p.image} alt={p.imageAlt} width={300} height={300} sizes="150px" />
+              <ProductThumb product={p} />
             </span>
             <h3>{p.name}</h3>
-            <span className="cutout__meta">{p.origins.join(" · ")}</span>
+            <StatusBadge status={p.status} />
           </Link>
         </Reveal>
       ))}
     </div>
+  );
+}
+
+export function Faq({ items, title = "Frequently asked questions" }: { items: { q: string; a: string }[]; title?: string }) {
+  return (
+    <section className="section">
+      <div className="wrap">
+        <h2 className="section-title">{title}</h2>
+      </div>
+      {items.map((f, i) => (
+        <details className="acc-row" key={f.q} open={i === 0}>
+          <summary className="wrap">{f.q}</summary>
+          <div className="wrap acc-row__body">
+            <p style={{ maxWidth: 820 }}>{f.a}</p>
+          </div>
+        </details>
+      ))}
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: items.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }} />
+    </section>
   );
 }
 

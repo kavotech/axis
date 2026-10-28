@@ -86,6 +86,14 @@ const COFFEE_GRADE_BY_SLUG: Record<string, (typeof COFFEE_GRADES)[number]> = {
   "robusta-screen-12": "Robusta Screen 12",
   "arabica-aa": "Arabica AA / AAA",
   "arabica-ab": "Arabica AB",
+  "robusta-faq": "Robusta FAQ",
+  "natural-robusta": "Natural Robusta (other screens)",
+  "washed-robusta": "Washed Robusta",
+  "arabica-aaa": "Arabica AA / AAA",
+  "bugisu-arabica": "Bugisu washed Arabica",
+  wugar: "Wugar (washed Arabica)",
+  drugar: "Drugar (natural Arabica)",
+  "buyer-specified-coffee": "Other (please specify)",
 };
 
 const uid = () =>Math.random().toString(36).slice(2, 9);

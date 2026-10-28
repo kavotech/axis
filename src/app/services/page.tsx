@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Cycle } from "@/components/Cycle";
 import { Icon } from "@/components/Icon";
+import { ServiceExtras } from "@/components/PageExtras";
 import { Band, CtaBand, PageTop, Reveal } from "@/components/ui";
 import { CATEGORIES } from "@/data/categories";
 import { PROCESS, SERVICES } from "@/data/content";
@@ -149,6 +150,8 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      <ServiceExtras />
 
       <CtaBand>&lsquo;Let us be part of your supply chain&rsquo;</CtaBand>
     </div>

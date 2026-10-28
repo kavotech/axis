@@ -1,13 +1,19 @@
 import type { IconName } from "@/components/Icon";
-import type { GroupId, QuoteKind } from "./categories";
+import type { CategorySlug, QuoteKind } from "./categories";
+import { EXTRA_PRODUCTS } from "./products-extra";
 
 export type Product = {
   slug: string;
   name: string;
-  group: GroupId;
+  group: CategorySlug;
+  /** Subcategory slug within the category. */
+  sub?: string;
+  /** core = part of the established range; enquiry = available as a sourcing enquiry only. */
+  status: "core" | "enquiry";
   kind: QuoteKind;
   icon: IconName;
-  image: string;
+  /** Omitted where no accurate licensed photograph is available — an icon is shown instead. */
+  image?: string;
   imageAlt: string;
   short: string;
   description: string[];
@@ -24,17 +30,21 @@ export type Product = {
   season?: string;
   /** Shown on the product page wherever a detail must be confirmed with the buyer. */
   confirm?: string;
+  applications?: string[];
+  faqs?: { q: string; a: string }[];
 };
 
 const STD_CONFIRM =
   "Specifications, volumes and seasonal availability are confirmed in writing for each enquiry.";
 
-export const PRODUCTS: Product[] = [
+const PRODUCTS_BASE: Product[] = [
   // ───────────────────────── Fresh fruits ─────────────────────────
   {
     slug: "hass-avocado",
     name: "Hass Avocados",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "avocados",
+    status: "core",
     kind: "fruit",
     icon: "avocado",
     image: "/images/avocado-pile.webp",
@@ -57,7 +67,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "fuerte-avocado",
     name: "Fuerte Avocados",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "avocados",
+    status: "core",
     kind: "fruit",
     icon: "avocado",
     image: "/images/axis-avocado-crates.webp",
@@ -79,7 +91,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "md2-pineapple",
     name: "MD2 Pineapples",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "pineapples",
+    status: "core",
     kind: "fruit",
     icon: "pineapple",
     image: "/images/pineapples.webp",
@@ -101,7 +115,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "tommy-atkins-mango",
     name: "Tommy Atkins Mangoes",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "mangoes",
+    status: "core",
     kind: "fruit",
     icon: "mango",
     image: "/images/mango-pile.webp",
@@ -123,7 +139,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "keitt-mango",
     name: "Keitt Mangoes",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "mangoes",
+    status: "core",
     kind: "fruit",
     icon: "mango",
     image: "/images/axis-mango-crates.webp",
@@ -145,7 +163,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "cavendish-banana",
     name: "Cavendish Bananas",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "bananas",
+    status: "core",
     kind: "fruit",
     icon: "banana",
     image: "/images/banana-bunch.webp",
@@ -167,7 +187,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "passion-fruit",
     name: "Passion Fruit",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "passion-fruit",
+    status: "core",
     kind: "fruit",
     icon: "passion",
     image: "/images/passion.webp",
@@ -189,7 +211,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "papaya",
     name: "Papaya",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "tropical",
+    status: "core",
     kind: "fruit",
     icon: "papaya",
     image: "/images/papaya-sliced.webp",
@@ -211,7 +235,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "soursop",
     name: "Soursop",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "tropical",
+    status: "core",
     kind: "fruit",
     icon: "soursop",
     image: "/images/soursop.webp",
@@ -233,7 +259,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "jackfruit",
     name: "Jackfruit",
-    group: "fresh-fruits",
+    group: "fruits",
+    sub: "tropical",
+    status: "core",
     kind: "fruit",
     icon: "jackfruit",
     image: "/images/jackfruit.webp",
@@ -257,7 +285,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "matooke",
     name: "Matooke",
-    group: "vegetables",
+    group: "roots-tubers",
+    sub: "cooking-bananas",
+    status: "core",
     kind: "vegetable",
     icon: "banana",
     image: "/images/plantain-box.webp",
@@ -279,7 +309,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "plantain",
     name: "Cooking Plantain",
-    group: "vegetables",
+    group: "roots-tubers",
+    sub: "cooking-bananas",
+    status: "core",
     kind: "vegetable",
     icon: "banana",
     image: "/images/axis-bananas.webp",
@@ -302,6 +334,8 @@ export const PRODUCTS: Product[] = [
     slug: "french-beans",
     name: "French Beans",
     group: "vegetables",
+    sub: "beans-peas",
+    status: "core",
     kind: "vegetable",
     icon: "herb",
     image: "/images/french-beans.webp",
@@ -326,6 +360,8 @@ export const PRODUCTS: Product[] = [
     slug: "sweet-potato",
     name: "Sweet Potatoes",
     group: "roots-tubers",
+    sub: "sweet-potatoes",
+    status: "core",
     kind: "vegetable",
     icon: "tuber",
     image: "/images/sweetpotato.webp",
@@ -348,6 +384,8 @@ export const PRODUCTS: Product[] = [
     slug: "cassava",
     name: "Cassava",
     group: "roots-tubers",
+    sub: "cassava",
+    status: "core",
     kind: "vegetable",
     icon: "tuber",
     image: "/images/cassava.webp",
@@ -370,6 +408,8 @@ export const PRODUCTS: Product[] = [
     slug: "yam",
     name: "Yams",
     group: "roots-tubers",
+    sub: "yams-potatoes",
+    status: "core",
     kind: "vegetable",
     icon: "tuber",
     image: "/images/yam.webp",
@@ -394,6 +434,8 @@ export const PRODUCTS: Product[] = [
     slug: "ginger",
     name: "Ginger",
     group: "herbs-spices",
+    sub: "ginger-turmeric",
+    status: "core",
     kind: "spice",
     icon: "ginger",
     image: "/images/ginger.webp",
@@ -416,6 +458,8 @@ export const PRODUCTS: Product[] = [
     slug: "turmeric",
     name: "Turmeric",
     group: "herbs-spices",
+    sub: "ginger-turmeric",
+    status: "core",
     kind: "spice",
     icon: "ginger",
     image: "/images/turmeric.webp",
@@ -438,6 +482,8 @@ export const PRODUCTS: Product[] = [
     slug: "birds-eye-chilli",
     name: "Bird's Eye Chillies",
     group: "herbs-spices",
+    sub: "chilli-products",
+    status: "core",
     kind: "spice",
     icon: "chilli",
     image: "/images/chillies.webp",
@@ -460,6 +506,8 @@ export const PRODUCTS: Product[] = [
     slug: "fresh-herbs",
     name: "Fresh Culinary Herbs",
     group: "herbs-spices",
+    sub: "fresh-herbs",
+    status: "core",
     kind: "spice",
     icon: "herb",
     image: "/images/herbs.webp",
@@ -481,6 +529,8 @@ export const PRODUCTS: Product[] = [
     slug: "vanilla",
     name: "Vanilla Beans",
     group: "herbs-spices",
+    sub: "vanilla-cardamom",
+    status: "core",
     kind: "spice",
     icon: "herb",
     image: "/images/axis-vanilla.webp",
@@ -505,6 +555,8 @@ export const PRODUCTS: Product[] = [
     slug: "robusta-screen-18",
     name: "Uganda Robusta Screen 18",
     group: "coffee",
+    sub: "robusta",
+    status: "core",
     kind: "coffee",
     icon: "coffee",
     image: "/images/green-coffee.webp",
@@ -527,6 +579,8 @@ export const PRODUCTS: Product[] = [
     slug: "robusta-screen-15",
     name: "Uganda Robusta Screen 15",
     group: "coffee",
+    sub: "robusta",
+    status: "core",
     kind: "coffee",
     icon: "coffee",
     image: "/images/axis-green-coffee-hand.webp",
@@ -549,6 +603,8 @@ export const PRODUCTS: Product[] = [
     slug: "robusta-screen-12",
     name: "Uganda Robusta Screen 12",
     group: "coffee",
+    sub: "robusta",
+    status: "core",
     kind: "coffee",
     icon: "coffee",
     image: "/images/coffee-sack.webp",
@@ -571,6 +627,8 @@ export const PRODUCTS: Product[] = [
     slug: "arabica-aa",
     name: "Uganda Arabica AA",
     group: "coffee",
+    sub: "arabica",
+    status: "core",
     kind: "coffee",
     icon: "coffee",
     image: "/images/coffee-cherries.webp",
@@ -593,6 +651,8 @@ export const PRODUCTS: Product[] = [
     slug: "arabica-ab",
     name: "Uganda Arabica AB",
     group: "coffee",
+    sub: "arabica",
+    status: "core",
     kind: "coffee",
     icon: "coffee",
     image: "/images/coffee-blossom.webp",
@@ -617,6 +677,7 @@ export const PRODUCTS: Product[] = [
     slug: "cocoa-beans",
     name: "Uganda Cocoa Beans",
     group: "cocoa",
+    status: "core",
     kind: "cocoa",
     icon: "cocoa",
     image: "/images/cocoa-hand.webp",
@@ -640,7 +701,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "sesame-seeds",
     name: "Sesame Seeds",
-    group: "oilseeds-nuts",
+    group: "oilseeds",
+    sub: "sesame",
+    status: "core",
     kind: "oilseed",
     icon: "sesame",
     image: "/images/axis-sesame-hand.webp",
@@ -662,7 +725,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "groundnuts",
     name: "Groundnuts",
-    group: "oilseeds-nuts",
+    group: "oilseeds",
+    sub: "other-oilseeds",
+    status: "core",
     kind: "oilseed",
     icon: "nut",
     image: "/images/peanuts.webp",
@@ -684,7 +749,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "sunflower-seeds",
     name: "Sunflower Seeds",
-    group: "oilseeds-nuts",
+    group: "oilseeds",
+    sub: "other-oilseeds",
+    status: "core",
     kind: "oilseed",
     icon: "sun",
     image: "/images/sunflower-seeds.webp",
@@ -706,7 +773,9 @@ export const PRODUCTS: Product[] = [
   {
     slug: "chia-seeds",
     name: "Chia Seeds",
-    group: "oilseeds-nuts",
+    group: "oilseeds",
+    sub: "other-oilseeds",
+    status: "core",
     kind: "oilseed",
     icon: "sesame",
     image: "/images/chia.webp",
@@ -728,7 +797,8 @@ export const PRODUCTS: Product[] = [
   {
     slug: "macadamia",
     name: "Macadamia Nuts",
-    group: "oilseeds-nuts",
+    group: "nuts",
+    status: "core",
     kind: "oilseed",
     icon: "nut",
     image: "/images/macadamia.webp",
@@ -750,7 +820,8 @@ export const PRODUCTS: Product[] = [
   {
     slug: "cashew-nuts",
     name: "Cashew Nuts",
-    group: "oilseeds-nuts",
+    group: "nuts",
+    status: "core",
     kind: "oilseed",
     icon: "nut",
     image: "/images/cashew.webp",
@@ -775,6 +846,8 @@ export const PRODUCTS: Product[] = [
     slug: "dried-mango",
     name: "Dried Mango",
     group: "dried-products",
+    sub: "dried-fruit",
+    status: "core",
     kind: "dried",
     icon: "mango",
     image: "/images/dried-fruit-mix.webp",
@@ -796,6 +869,8 @@ export const PRODUCTS: Product[] = [
     slug: "dried-pineapple",
     name: "Dried Pineapple",
     group: "dried-products",
+    sub: "dried-fruit",
+    status: "core",
     kind: "dried",
     icon: "pineapple",
     image: "/images/pineapple-lot.webp",
@@ -817,6 +892,8 @@ export const PRODUCTS: Product[] = [
     slug: "banana-chips",
     name: "Banana Chips",
     group: "dried-products",
+    sub: "dried-fruit",
+    status: "core",
     kind: "dried",
     icon: "banana",
     image: "/images/banana-chips.webp",
@@ -838,6 +915,8 @@ export const PRODUCTS: Product[] = [
     slug: "moringa",
     name: "Moringa Leaf",
     group: "dried-products",
+    sub: "other-processed",
+    status: "core",
     kind: "dried",
     icon: "leaf",
     image: "/images/moringa.webp",
@@ -859,7 +938,8 @@ export const PRODUCTS: Product[] = [
   {
     slug: "shea-butter",
     name: "Shea Butter",
-    group: "dried-products",
+    group: "nuts",
+    status: "core",
     kind: "dried",
     icon: "drop",
     image: "/images/shea-butter.webp",
@@ -880,7 +960,15 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-export const productBySlug = (slug: string) => PRODUCTS.find((p) => p.slug === slug);
-export const productsInGroups = (groups: string[]) => PRODUCTS.filter((p) => groups.includes(p.group));
+export const ALL_PRODUCTS: Product[] = [...PRODUCTS_BASE, ...EXTRA_PRODUCTS];
+export { ALL_PRODUCTS as PRODUCTS_ALL };
+export const productBySlug = (slug: string) => ALL_PRODUCTS.find((p) => p.slug === slug);
+export const productsInGroups = (groups: string[]) => ALL_PRODUCTS.filter((p) => groups.includes(p.group));
 export const relatedProducts = (p: Product, n = 4) =>
-  [...PRODUCTS.filter((x) => x.group === p.group && x.slug !== p.slug), ...PRODUCTS.filter((x) => x.kind === p.kind && x.group !== p.group)].slice(0, n);
+  [
+    ...ALL_PRODUCTS.filter((x) => x.group === p.group && x.sub === p.sub && x.slug !== p.slug),
+    ...ALL_PRODUCTS.filter((x) => x.group === p.group && x.sub !== p.sub),
+    ...ALL_PRODUCTS.filter((x) => x.kind === p.kind && x.group !== p.group),
+  ].slice(0, n);
+export const productsIn = (cat: string, sub?: string) => ALL_PRODUCTS.filter((p) => p.group === cat && (!sub || p.sub === sub));
+export const PRODUCTS = ALL_PRODUCTS;

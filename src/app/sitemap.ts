@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { CATEGORIES } from "@/data/categories";
 import { INSIGHTS } from "@/data/content";
+import { INFO_PAGES } from "@/data/pages";
+import { LEADERS } from "@/data/site";
 import { PRODUCTS } from "@/data/products";
 import { SITE } from "@/data/site";
 
@@ -17,6 +19,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/products", 0.9, "weekly"),
     page("/get-a-quote", 0.9),
     ...CATEGORIES.map((c) => page(`/products/${c.slug}`, 0.8)),
+    ...CATEGORIES.flatMap((c) => c.subcategories.map((sc) => page(`/products/${c.slug}/${sc.slug}`, 0.75))),
+    ...INFO_PAGES.map((p) => page(p.path, 0.6)),
+    page("/company/directors", 0.7),
+    ...LEADERS.map((l) => page(`/company/directors/${l.slug}`, 0.5)),
     ...PRODUCTS.map((p) => page(`/products/${p.slug}`, 0.7)),
     page("/about", 0.7),
     page("/services", 0.7),

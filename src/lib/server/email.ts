@@ -14,8 +14,23 @@ function fromAddress() {
   return raw.includes("<") ? raw : `Axis Agro International <${raw}>`;
 }
 const list = (v: string) => v.split(",").map((s) => s.trim()).filter(Boolean);
-const quoteRecipients = () => list(env("QUOTE_NOTIFICATION_EMAIL", "ADMIN_EMAIL_1") || SITE.email);
-const contactRecipients = () => list(env("CONTACT_NOTIFICATION_EMAIL", "QUOTE_NOTIFICATION_EMAIL", "ADMIN_EMAIL_1") || SITE.email);
+const uniq = (xs: string[]) => [...new Set(xs.map((x) => x.toLowerCase()))];
+/** Quotations go to general + operations mailboxes unless QUOTE_NOTIFICATION_EMAIL overrides. ADMIN_EMAIL_1 is kept as a copy if set. */
+const quoteRecipients = () => {
+  const override = env("QUOTE_NOTIFICATION_EMAIL");
+  return override ? list(override) : uniq([SITE.emails.general, SITE.emails.operations, ...list(env("ADMIN_EMAIL_1"))]);
+};
+/** Contact messages are routed by topic unless CONTACT_NOTIFICATION_EMAIL overrides. */
+const TOPIC_ROUTES: Record<string, string> = {
+  "Supplier / sourcing partnership": SITE.emails.uganda,
+  "Logistics & documentation": SITE.emails.operations,
+  "Leadership / strategic partnership": SITE.emails.director,
+};
+const contactRecipients = (topic?: string) => {
+  const override = env("CONTACT_NOTIFICATION_EMAIL");
+  if (override) return list(override);
+  return uniq([(topic && TOPIC_ROUTES[topic]) || SITE.emails.general, ...list(env("ADMIN_EMAIL_1"))]);
+};
 
 let resend: Resend | null | undefined;
 function client() {
@@ -256,7 +271,7 @@ ${section("Enquiry", [
 ])}`,
   });
   const team = await send({
-    to: contactRecipients(),
+    to: contactRecipients(data.topic),
     subject: `${opts.review ? "[REVIEW] " : ""}Contact ${reference} — ${data.topic} — ${data.name}`.slice(0, 200),
     html: teamHtml,
     text: `Contact enquiry ${reference}\nTopic: ${data.topic}\nFrom: ${data.name} <${data.email}> ${data.phone}\nCompany: ${data.company}\nCountry: ${data.country}\n\n${data.message}`,
@@ -280,7 +295,7 @@ ${p(`If you need to source a specific product, our <a href="${SITE.url}/get-a-qu
     subject: `We have received your message (${reference}) — Axis Agro International`,
     html: buyerHtml,
     text: `Thank you for contacting Axis Agro International.\nReference: ${reference}\n\nWe aim to reply within one to two working days.\n\n${SITE.email}`,
-    replyTo: contactRecipients()[0],
+    replyTo: contactRecipients(data.topic)[0],
   });
   return { notified: team.ok, acknowledged: ack.ok };
 }
