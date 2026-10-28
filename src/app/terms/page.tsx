@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageHero } from "@/components/ui";
+import { PageTop } from "@/components/ui";
 import { SITE } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -12,9 +12,9 @@ export const metadata = pageMetadata({
 export default function TermsPage() {
   return (
     <>
-      <PageHero title="Website terms of use" intro="Please read these terms before using this website." crumbs={[{ name: "Terms", href: "/terms" }]} variant="plain" />
+      <PageTop variant="plain" title="Website terms of use" left={<p style={{ margin: 0 }}>{"Please read these terms before using this website."}</p>} crumbs={[{ name: "Terms", href: "/terms" }]} />
       <section className="section">
-        <div className="container container--narrow prose">
+        <div className="prose">
           <p className="legal-flag">
             <strong>Draft for company review.</strong> These terms cover use of the website only. They are not terms of sale. They should be reviewed by Axis Agro International Ltd and a legal adviser
             before being relied upon. Last updated 27 October 2026.

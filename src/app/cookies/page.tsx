@@ -1,5 +1,5 @@
 import { CookieSettingsButton } from "@/components/CookieConsent";
-import { PageHero } from "@/components/ui";
+import { PageTop } from "@/components/ui";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -11,9 +11,9 @@ export const metadata = pageMetadata({
 export default function CookiesPage() {
   return (
     <>
-      <PageHero title="Cookie policy" intro="We keep cookies to a minimum." crumbs={[{ name: "Cookies", href: "/cookies" }]} variant="plain" />
+      <PageTop variant="plain" title="Cookie policy" left={<p style={{ margin: 0 }}>{"We keep cookies to a minimum."}</p>} crumbs={[{ name: "Cookies", href: "/cookies" }]} />
       <section className="section">
-        <div className="container container--narrow prose">
+        <div className="prose">
           <p className="legal-flag">
             <strong>Draft for company review.</strong> Last updated 27 October 2026.
           </p>

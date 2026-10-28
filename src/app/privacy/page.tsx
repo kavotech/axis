@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageHero } from "@/components/ui";
+import { PageTop } from "@/components/ui";
 import { SITE } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -12,9 +12,9 @@ export const metadata = pageMetadata({
 export default function PrivacyPage() {
   return (
     <>
-      <PageHero title="Privacy notice" intro="How we handle personal data submitted through this website." crumbs={[{ name: "Privacy", href: "/privacy" }]} variant="plain" />
+      <PageTop variant="plain" title="Privacy notice" left={<p style={{ margin: 0 }}>{"How we handle personal data submitted through this website."}</p>} crumbs={[{ name: "Privacy", href: "/privacy" }]} />
       <section className="section">
-        <div className="container container--narrow prose">
+        <div className="prose">
           <p className="legal-flag">
             <strong>Draft for company review.</strong> This notice describes how the website currently processes data. It should be reviewed by Axis Agro International Ltd (and, where appropriate, a
             legal adviser) before being relied upon. Last updated 27 October 2026.

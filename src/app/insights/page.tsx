@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "@/components/Icon";
-import { CtaPanel, PageHero, Reveal } from "@/components/ui";
+import { CtaBand, PageTop, Reveal } from "@/components/ui";
 import { INSIGHTS } from "@/data/content";
 import { pageMetadata } from "@/lib/seo";
 
@@ -13,57 +12,38 @@ export const metadata = pageMetadata({
 });
 
 export default function InsightsPage() {
-  const [lead, ...rest] = INSIGHTS;
   return (
-    <>
-      <PageHero
-        eyebrow="News & insights"
-        title="Guides for produce and commodity buyers."
-        intro="Practical, evergreen notes on grades, trade terms, freight and documentation. Company announcements will be published here when there is news to share."
+    <div className="accent-leaf">
+      <PageTop
+        title="News & insights"
+        image="/images/green-coffee.webp"
+        imageAlt="Green coffee beans"
+        under="#fff"
         crumbs={[{ name: "Insights", href: "/insights" }]}
-        variant="plain"
+        left={<p className="lead">Practical guides for produce and commodity buyers.</p>}
+        right={<p>Notes on grades, trade terms, freight and documentation. Company announcements will be published here when there is news to share.</p>}
       />
-
       <section className="section">
-        <div className="container">
-          <Reveal>
-            <Link href={`/insights/${lead.slug}`} className="article-card split" style={{ alignItems: "center", marginBottom: "clamp(48px, 7vw, 96px)" }}>
-              <div className="article-card__media" style={{ marginBottom: 0 }}>
-                <Image src={lead.image} alt={lead.imageAlt} width={1200} height={825} sizes="(max-width: 900px) 100vw, 55vw" priority />
-              </div>
-              <div>
-                <div className="article-card__meta">
-                  <span>{lead.category}</span>
-                  <span>{lead.readingMinutes} min read</span>
-                </div>
-                <h2>{lead.title}</h2>
-                <p className="lead">{lead.excerpt}</p>
-                <span className="link-arrow">
-                  Read the guide <Icon name="arrow" size={16} />
+        <div className="wrap posts">
+          {INSIGHTS.map((a, i) => (
+            <Reveal key={a.slug} delay={(i % 3) * 0.06}>
+              <Link href={`/insights/${a.slug}`} className="post-card">
+                <span className="post-card__img">
+                  <Image src={a.image} alt={a.imageAlt} width={800} height={500} sizes="(max-width: 767px) 100vw, 33vw" />
                 </span>
-              </div>
-            </Link>
-          </Reveal>
-          <div className="grid grid-3">
-            {rest.map((a, i) => (
-              <Reveal key={a.slug} delay={i * 0.06}>
-                <Link href={`/insights/${a.slug}`} className="article-card">
-                  <div className="article-card__media">
-                    <Image src={a.image} alt={a.imageAlt} width={800} height={550} sizes="(max-width: 640px) 100vw, 33vw" />
-                  </div>
-                  <div className="article-card__meta">
-                    <span>{a.category}</span>
-                    <span>{a.readingMinutes} min read</span>
-                  </div>
+                <span className="post-card__body">
+                  <span className="post-card__meta">
+                    {a.category} · {a.readingMinutes} min read
+                  </span>
                   <h3>{a.title}</h3>
-                  <p>{a.excerpt}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
+                  <span className="muted">{a.excerpt}</span>
+                </span>
+              </Link>
+            </Reveal>
+          ))}
         </div>
       </section>
-      <CtaPanel />
-    </>
+      <CtaBand />
+    </div>
   );
 }

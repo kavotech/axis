@@ -1,80 +1,59 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
-import { CtaPanel, PageHero, Reveal, SectionHead } from "@/components/ui";
+import { Band, CtaBand, PageTop, Reveal } from "@/components/ui";
 import { INDUSTRIES } from "@/data/content";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Industries We Supply — Wholesale, Retail, Foodservice & Manufacturing",
-  description:
-    "Axis Agro supplies wholesale produce markets, importers, distributors, supermarkets, foodservice, hospitality, food manufacturers and industrial commodity buyers.",
+  description: "Axis Agro supplies wholesale produce markets, importers, distributors, supermarkets, foodservice, hospitality, food manufacturers and industrial commodity buyers.",
   path: "/industries",
   image: "/images/market-tropical.webp",
 });
 
-const IMAGES: Record<string, string> = {
-  "wholesale-markets": "/images/market-tropical.webp",
-  importers: "/images/ship-2.webp",
-  distributors: "/images/warehouse-2.webp",
-  supermarkets: "/images/axis-avocado-boxes.webp",
-  foodservice: "/images/veg-box.webp",
-  hospitality: "/images/tropical-basket.webp",
-  manufacturing: "/images/dried-fruit-mix.webp",
-  commodity: "/images/axis-sacks-warehouse.webp",
-};
-
 export default function IndustriesPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Industries we supply"
-        title="Supply shaped around your business."
-        intro="Different buyers need different things: pack sizes, delivery rhythms, documentation and specifications. We start from how you operate."
+    <div className="accent-gold">
+      <PageTop
+        title="Industries we supply"
         image="/images/market-tropical.webp"
         imageAlt="Market stall displaying fresh tropical fruit"
+        under="var(--gold)"
         crumbs={[{ name: "Industries", href: "/industries" }]}
+        left={<p className="lead">Different buyers need different things: pack sizes, delivery rhythms, documents and specifications.</p>}
+        right={<p>We start from how your business operates — whether you run a wholesale market stall, a distribution network, a factory or a trading desk.</p>}
       />
 
-      <section className="section">
-        <div className="container">
-          <SectionHead eyebrow="Who we work with" title="Eight buyer types, one consistent standard." />
-          <div style={{ display: "grid", gap: "clamp(48px, 7vw, 96px)" }}>
+      <Band icon="users" className="band--gold">
+        &lsquo;Supply shaped around your business&rsquo;
+      </Band>
+
+      <section className="section" style={{ paddingTop: 110 }}>
+        <div className="wrap">
+          <h2 className="h-lg">Who we work with</h2>
+          <div className="circles__grid" style={{ marginTop: 40, rowGap: 60 }}>
             {INDUSTRIES.map((ind, i) => (
-              <div key={ind.id} id={ind.id} className={`split${i % 2 ? " split--reverse" : ""}`}>
-                <Reveal>
-                  <div className="frame frame--wide">
-                    <Image src={IMAGES[ind.id]} alt="" fill sizes="(max-width: 900px) 90vw, 50vw" />
-                  </div>
-                </Reveal>
-                <Reveal delay={0.08}>
-                  <span className="icon-badge" style={{ marginBottom: 18 }}>
-                    <Icon name={ind.icon} size={30} />
+              <Reveal key={ind.id} delay={(i % 4) * 0.06}>
+                <div className="circle-item circle-item--value" id={ind.id}>
+                  <span className="circle-item__img">
+                    <Icon name={ind.icon} strokeWidth={2} />
                   </span>
-                  <span className="eyebrow" style={{ display: "flex" }}>
-                    0{i + 1}
-                  </span>
-                  <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.6rem)" }}>{ind.title}</h2>
-                  <p className="lead">{ind.text}</p>
-                  <p className="product-card__meta" style={{ margin: "20px 0 10px" }}>
-                    Frequently requested
+                  <h3>{ind.title}</h3>
+                  <p>{ind.text}</p>
+                  <p style={{ fontWeight: 400, fontSize: 14 }} className="muted">
+                    {ind.products.join(" · ")}
                   </p>
-                  <ul className="chip-list" style={{ marginBottom: 24 }}>
-                    {ind.products.map((p) => (
-                      <li key={p}>{p}</li>
-                    ))}
-                  </ul>
-                  <Link href="/get-a-quote" className="link-arrow">
-                    Request a quote <Icon name="arrow" size={16} />
+                  <Link href="/get-a-quote" className="read-more" style={{ marginTop: 10 }}>
+                    Request a quote
                   </Link>
-                </Reveal>
-              </div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <CtaPanel />
-    </>
+      <CtaBand>&lsquo;Tell us how you buy — we will fit around it&rsquo;</CtaBand>
+    </div>
   );
 }

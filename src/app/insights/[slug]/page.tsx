@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@/components/Icon";
-import { CtaPanel, JsonLd, PageHero } from "@/components/ui";
+import { CtaBand, JsonLd, PageTop } from "@/components/ui";
 import { INSIGHTS, insightBySlug } from "@/data/content";
 import { SITE } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
@@ -24,50 +24,47 @@ const fmt = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "numer
 export default async function InsightPage({ params }: { params: Promise<Params> }) {
   const a = insightBySlug((await params).slug);
   if (!a) notFound();
-  const more = INSIGHTS.filter((x) => x.slug !== a.slug).slice(0, 3);
   return (
-    <>
-      <PageHero
-        eyebrow={a.category}
+    <div className="accent-leaf">
+      <PageTop
+        variant="plain"
         title={a.title}
-        intro={a.excerpt}
         crumbs={[
           { name: "Insights", href: "/insights" },
           { name: a.title, href: `/insights/${a.slug}` },
         ]}
-        variant="plain"
+        left={
+          <p style={{ margin: 0 }}>
+            {a.category} · {a.readingMinutes} min read · Last reviewed {fmt(a.reviewed)}
+          </p>
+        }
       />
       <article className="section">
-        <div className="container container--narrow">
-          <div className="article-card__meta" style={{ marginBottom: 28 }}>
-            <span>{a.readingMinutes} min read</span>
-            <span>Last reviewed {fmt(a.reviewed)}</span>
+        <div className="prose">
+          <div className="split__img" style={{ aspectRatio: "16 / 9", marginBottom: 36 }}>
+            <Image src={a.image} alt={a.imageAlt} width={1200} height={675} sizes="(max-width: 860px) 100vw, 820px" priority />
           </div>
-          <div className="frame frame--wide" style={{ marginBottom: 48 }}>
-            <Image src={a.image} alt={a.imageAlt} fill sizes="(max-width: 920px) 100vw, 920px" priority />
+          <p className="lead">{a.excerpt}</p>
+          {a.body.map((b, i) => (
+            <section key={i}>
+              {b.heading ? <h2>{b.heading}</h2> : null}
+              {b.paragraphs.map((p) => (
+                <p key={p.slice(0, 30)}>{p}</p>
+              ))}
+              {b.list ? (
+                <ul>
+                  {b.list.map((l) => (
+                    <li key={l}>{l}</li>
+                  ))}
+                </ul>
+              ) : null}
+            </section>
+          ))}
+          <div className="note" style={{ marginTop: 36 }}>
+            <Icon name="info" size={20} />
+            <span>This guide is general information, not legal or customs advice. Always confirm current requirements with the relevant authority or your customs adviser.</span>
           </div>
-          <div className="prose">
-            {a.body.map((b, i) => (
-              <section key={i}>
-                {b.heading ? <h2>{b.heading}</h2> : null}
-                {b.paragraphs.map((p) => (
-                  <p key={p.slice(0, 30)}>{p}</p>
-                ))}
-                {b.list ? (
-                  <ul>
-                    {b.list.map((l) => (
-                      <li key={l}>{l}</li>
-                    ))}
-                  </ul>
-                ) : null}
-              </section>
-            ))}
-            <p className="note" style={{ marginTop: 40 }}>
-              <Icon name="info" size={20} />
-              <span>This guide is general information, not legal or customs advice. Always confirm current requirements with the relevant authority or your customs adviser.</span>
-            </p>
-          </div>
-          <div className="btn-row" style={{ marginTop: 40 }}>
+          <div className="btn-row" style={{ marginTop: 30 }}>
             <Link href="/insights" className="btn btn--outline">
               All insights
             </Link>
@@ -77,26 +74,7 @@ export default async function InsightPage({ params }: { params: Promise<Params> 
           </div>
         </div>
       </article>
-
-      <section className="section section--cream">
-        <div className="container">
-          <h2 style={{ marginBottom: 32 }}>More guides</h2>
-          <div className="grid grid-3">
-            {more.map((m) => (
-              <Link key={m.slug} href={`/insights/${m.slug}`} className="article-card">
-                <div className="article-card__media">
-                  <Image src={m.image} alt={m.imageAlt} width={800} height={550} sizes="(max-width: 640px) 100vw, 33vw" />
-                </div>
-                <div className="article-card__meta">
-                  <span>{m.category}</span>
-                </div>
-                <h3>{m.title}</h3>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-      <CtaPanel />
+      <CtaBand />
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -111,6 +89,6 @@ export default async function InsightPage({ params }: { params: Promise<Params> 
           publisher: { "@id": `${SITE.url}/#organization` },
         }}
       />
-    </>
+    </div>
   );
 }

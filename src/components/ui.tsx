@@ -1,19 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
-import { categoryForGroup, groupLabel } from "@/data/categories";
 import type { Product } from "@/data/products";
 import { SITE } from "@/data/site";
 import { Icon, type IconName } from "./Icon";
 
 export function JsonLd({ data }: { data: unknown }) {
-  return (
-    <script
-      type="application/ld+json"
-      // JSON.stringify output escaped so it cannot close the script tag.
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
-    />
-  );
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }} />;
 }
 
 export type Crumb = { name: string; href: string };
@@ -22,12 +15,10 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
   const all = [{ name: "Home", href: "/" }, ...items];
   return (
     <>
-      <nav className="breadcrumbs" aria-label="Breadcrumb">
+      <nav className="crumbs" aria-label="Breadcrumb">
         <ol>
           {all.map((c, i) => (
-            <li key={c.href}>
-              {i === all.length - 1 ? <span aria-current="page">{c.name}</span> : <Link href={c.href}>{c.name}</Link>}
-            </li>
+            <li key={c.href}>{i === all.length - 1 ? <span aria-current="page">{c.name}</span> : <Link href={c.href}>{c.name}</Link>}</li>
           ))}
         </ol>
       </nav>
@@ -42,79 +33,9 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
   );
 }
 
-export function PageHero({
-  title,
-  intro,
-  image,
-  imageAlt = "",
-  crumbs,
-  eyebrow,
-  children,
-  variant,
-}: {
-  title: ReactNode;
-  intro?: ReactNode;
-  image?: string;
-  imageAlt?: string;
-  crumbs: Crumb[];
-  eyebrow?: string;
-  children?: ReactNode;
-  variant?: "short" | "plain";
-}) {
-  const cls = ["page-hero", variant === "short" && "page-hero--short", (variant === "plain" || !image) && "page-hero--plain"].filter(Boolean).join(" ");
-  return (
-    <section className={cls}>
-      {image ? (
-        <div className="page-hero__media">
-          <Image src={image} alt={imageAlt} fill priority sizes="100vw" />
-        </div>
-      ) : null}
-      <div className="container page-hero__content hero-enter">
-        <Breadcrumbs items={crumbs} />
-        {eyebrow ? <span className="eyebrow eyebrow--light">{eyebrow}</span> : null}
-        <h1>{title}</h1>
-        {intro ? <p>{intro}</p> : null}
-        {children}
-      </div>
-    </section>
-  );
-}
+export const quoteHref = (slug?: string) => (slug ? `/get-a-quote?product=${encodeURIComponent(slug)}` : "/get-a-quote");
 
-export function SectionHead({
-  eyebrow,
-  title,
-  lead,
-  center,
-  action,
-}: {
-  eyebrow?: string;
-  title: ReactNode;
-  lead?: ReactNode;
-  center?: boolean;
-  action?: ReactNode;
-}) {
-  if (action) {
-    return (
-      <div className="section-head section-head--split reveal">
-        <div>
-          {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
-          <h2>{title}</h2>
-          {lead ? <p className="lead">{lead}</p> : null}
-        </div>
-        {action}
-      </div>
-    );
-  }
-  return (
-    <div className={`section-head reveal${center ? " section-head--center" : ""}`}>
-      {eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}
-      <h2>{title}</h2>
-      {lead ? <p className="lead">{lead}</p> : null}
-    </div>
-  );
-}
-
-export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }: { children: ReactNode; delay?: number; className?: string; as?: "div" | "li" | "article" }) {
+export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }: { children: ReactNode; delay?: number; className?: string; as?: "div" | "li" | "section" }) {
   return (
     <Tag className={`reveal ${className}`} style={{ "--delay": `${delay}s` } as CSSProperties}>
       {children}
@@ -122,109 +43,178 @@ export function Reveal({ children, delay = 0, className = "", as: Tag = "div" }:
   );
 }
 
-export function quoteHref(slug?: string) {
-  return slug ? `/get-a-quote?product=${encodeURIComponent(slug)}` : "/get-a-quote";
-}
-
-export function ProductCard({ product, priority }: { product: Product; priority?: boolean }) {
-  return (
-    <article className="product-card">
-      <Link href={`/products/${product.slug}`} className="product-card__media" tabIndex={-1} aria-hidden="true">
-        <Image src={product.image} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1100px) 50vw, 25vw" priority={priority} />
-        <span className="product-card__chip">
-          <Icon name={product.icon} size={16} /> {groupLabel(product.group)}
-        </span>
-      </Link>
-      <div className="product-card__body">
-        <span className="product-card__meta">Origin: {product.origins.join(" · ")}</span>
-        <h3>
-          <Link href={`/products/${product.slug}`}>{product.name}</Link>
-        </h3>
-        <p>{product.short}</p>
-        <div className="product-card__actions">
-          <Link href={`/products/${product.slug}`} className="link-arrow">
-            Details <Icon name="arrow" size={16} />
-          </Link>
-          <Link href={quoteHref(product.slug)} className="btn btn--sm btn--outline" aria-label={`Request a quote for ${product.name}`}>
-            Request quote
-          </Link>
-        </div>
-      </div>
-    </article>
-  );
-}
-
-export function CtaPanel({
-  title = "Tell us what you need to source.",
-  text = "Share your product, grade, volume, destination and timing. We will confirm what can be supplied and respond with next steps.",
-  image = "/images/axis-avocado-boxes.webp",
-  product,
+/**
+ * Interior page opening: an image strip with a content box overlapping it.
+ * - "marker": white box with a triangle marker on its left edge.
+ * - "filled": accent-coloured box with a notch below it.
+ * - "split": white text half + grey visual half.
+ * - "plain": accent band without image (articles, legal).
+ */
+export function PageTop({
+  variant = "marker",
+  title,
+  image,
+  imageAlt = "",
+  crumbs,
+  left,
+  right,
+  columns,
+  visual,
+  under,
 }: {
-  title?: string;
-  text?: string;
+  variant?: "marker" | "filled" | "split" | "plain";
+  title: ReactNode;
   image?: string;
-  product?: string;
+  imageAlt?: string;
+  crumbs: Crumb[];
+  left?: ReactNode;
+  right?: ReactNode;
+  columns?: ReactNode[];
+  visual?: ReactNode;
+  /** Background colour of the area beneath the image strip. */
+  under?: string;
 }) {
+  if (variant === "plain") {
+    return (
+      <section className="page-top page-top--plain">
+        <div className="wrap">
+          <div className="page-box">
+            <Breadcrumbs items={crumbs} />
+            <h1 className="h-xl">{title}</h1>
+            {left ? <div className="page-box__col">{left}</div> : null}
+          </div>
+        </div>
+      </section>
+    );
+  }
+  const head = (
+    <div className="page-box__head">
+      <Breadcrumbs items={crumbs} />
+      <h1>{title}</h1>
+    </div>
+  );
   return (
-    <section className="section section--tight">
-      <div className="container">
-        <div className="cta-panel reveal">
-          <Image src={image} alt="" fill sizes="(max-width: 1320px) 100vw, 1320px" />
-          <div>
-            <span className="eyebrow eyebrow--light">Trade enquiries</span>
-            <h2>{title}</h2>
-            <p>{text}</p>
+    <section className={`page-top${variant === "filled" ? " notch-bottom" : ""}`} style={under ? ({ "--under": under } as CSSProperties) : undefined}>
+      {image ? (
+        <div className="page-top__media">
+          <Image src={image} alt={imageAlt} fill priority sizes="100vw" />
+        </div>
+      ) : null}
+      <div className="page-top__under" />
+      <div className="wrap" style={{ position: "relative" }}>
+        {variant === "split" ? (
+          <div className="page-box page-box--split page-box--marker">
+            <div className="page-box__text">
+              {head}
+              <div style={{ marginTop: 16 }}>{left}</div>
+            </div>
+            <div className="page-box__visual">{visual}</div>
           </div>
-          <div className="btn-row">
-            <Link href={quoteHref(product)} className="btn btn--gold">
-              Request a Quote <Icon name="arrow" size={18} />
-            </Link>
-            <Link href="/contact" className="btn btn--ghost">
-              Contact our team
-            </Link>
+        ) : (
+          <div className={`page-box${variant === "filled" ? " page-box--filled" : " page-box--marker"}${columns && columns.length === 3 ? " page-box--3" : ""}`}>
+            {head}
+            {columns ? (
+              columns.map((c, i) => (
+                <div className="page-box__col" key={i}>
+                  {c}
+                </div>
+              ))
+            ) : (
+              <>
+                <div className="page-box__col">{left}</div>
+                <div className="page-box__col">{right}</div>
+              </>
+            )}
           </div>
+        )}
+      </div>
+      {variant === "filled" ? null : <div className="page-top__after" />}
+    </section>
+  );
+}
+
+/** Full-width accent band with an icon, a quoted statement and a notch. */
+export function Band({
+  icon,
+  children,
+  sub,
+  action,
+  notch = "bottom",
+  className = "",
+  tall,
+}: {
+  icon?: IconName;
+  children: ReactNode;
+  sub?: ReactNode;
+  action?: ReactNode;
+  notch?: "bottom" | "top" | "both" | "none";
+  className?: string;
+  tall?: boolean;
+}) {
+  const cls = ["band", tall && "band--tall", (notch === "bottom" || notch === "both") && "notch-bottom", (notch === "top" || notch === "both") && "notch-top", className].filter(Boolean).join(" ");
+  return (
+    <section className={cls}>
+      <div className="reveal">
+        {icon ? (
+          <span className="band__icon">
+            <Icon name={icon} strokeWidth={2.4} />
+          </span>
+        ) : null}
+        <h2>{children}</h2>
+        {sub ? <p className="band__sub">{sub}</p> : null}
+        {action}
+      </div>
+    </section>
+  );
+}
+
+export type CircleItem = { href: string; icon: IconName; title: string; text: string };
+
+export function Circles({ items, className = "" }: { items: CircleItem[]; className?: string }) {
+  return (
+    <section className={`circles ${className}`}>
+      <div className="wrap">
+        <div className="circles__grid">
+          {items.map((c, i) => (
+            <Reveal key={c.title} delay={i * 0.08}>
+              <Link href={c.href} className="circle-item">
+                <span className="circle-item__img">
+                  <Icon name={c.icon} strokeWidth={2} />
+                </span>
+                <h3>{c.title}</h3>
+                <p>{c.text}</p>
+              </Link>
+            </Reveal>
+          ))}
         </div>
       </div>
     </section>
   );
 }
 
-export function Band({ icon = "leaf", children, lead, actions, variant }: { icon?: IconName; children: ReactNode; lead?: ReactNode; actions?: ReactNode; variant?: "botanical" | "cream" }) {
+export function CutoutGrid({ products, ring }: { products: Product[]; ring?: string }) {
   return (
-    <section className={`band${variant ? ` band--${variant}` : ""}`}>
-      <div className="container reveal">
-        <span className="band__icon">
-          <Icon name={icon} size={44} strokeWidth={1.4} />
-        </span>
-        <p className="band__quote">{children}</p>
-        {lead ? <p className="lead">{lead}</p> : null}
-        {actions ? <div className="btn-row">{actions}</div> : null}
-      </div>
-    </section>
-  );
-}
-
-export function FeatureCard({ icon, title, text, points }: { icon: IconName; title: string; text: string; points?: string[] }) {
-  return (
-    <div className="feature-card feature">
-      <span className="icon-badge">
-        <Icon name={icon} size={30} />
-      </span>
-      <h3>{title}</h3>
-      <p>{text}</p>
-      {points?.length ? (
-        <ul>
-          {points.map((p) => (
-            <li key={p}>
-              <Icon name="check" size={14} strokeWidth={3} /> {p}
-            </li>
-          ))}
-        </ul>
-      ) : null}
+    <div className="product-range__grid">
+      {products.map((p, i) => (
+        <Reveal key={p.slug} delay={(i % 4) * 0.06}>
+          <Link href={`/products/${p.slug}`} className="cutout" style={ring ? ({ "--ring": ring } as CSSProperties) : undefined}>
+            <span className="cutout__img">
+              <Image src={p.image} alt={p.imageAlt} width={300} height={300} sizes="150px" />
+            </span>
+            <h3>{p.name}</h3>
+            <span className="cutout__meta">{p.origins.join(" · ")}</span>
+          </Link>
+        </Reveal>
+      ))}
     </div>
   );
 }
 
-export function categoryHrefForProduct(p: Product) {
-  return `/products/${categoryForGroup(p.group).slug}`;
+/** Closing statement band with a notch cut into its top edge and one pill button. */
+export function CtaBand({ children = "'Let's discuss what we can source for you'", href = "/get-a-quote", label = "Request a quote" }: { children?: ReactNode; href?: string; label?: string }) {
+  return (
+    <Band notch="top" tall action={<Link href={href} className="btn btn--gold">{label}</Link>} className="band--cta">
+      {children}
+    </Band>
+  );
 }

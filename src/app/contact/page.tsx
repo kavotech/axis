@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
-import { Icon } from "@/components/Icon";
-import { JsonLd, PageHero } from "@/components/ui";
+import { Band, JsonLd, PageTop } from "@/components/ui";
 import { SITE } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -12,80 +11,102 @@ export const metadata = pageMetadata({
   image: "/images/axis-mango-cartons.webp",
 });
 
+const initials = (n: string) =>
+  n
+    .split(" ")
+    .map((x) => x[0])
+    .slice(0, 2)
+    .join("");
+
 export default function ContactPage() {
   return (
-    <>
-      <PageHero
-        eyebrow="Contact"
-        title="Let's talk about your supply."
-        intro="Questions about products, availability, logistics or partnerships — our UK team will point you in the right direction."
-        image="/images/axis-mango-cartons.webp"
-        imageAlt="Mangoes packed in export cartons"
+    <div className="accent-orange">
+      <PageTop
+        title="Contact"
+        image="/images/mango-pile.webp"
+        imageAlt="Pile of ripe mangoes"
+        under="var(--orange)"
         crumbs={[{ name: "Contact", href: "/contact" }]}
-        variant="short"
+        columns={[
+          <p key="a">
+            {SITE.legalName}
+            <br />
+            United Kingdom (registered office)
+            <br />
+            Address available on request
+          </p>,
+          <p key="b">
+            T <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+            <br />
+            E <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            <br />
+            WhatsApp {SITE.phone}
+          </p>,
+          <p key="c">
+            {SITE.registration}
+            <br />
+            Sourcing partners in Uganda &amp; East Africa
+          </p>,
+        ]}
       />
-      <section className="section section--cream">
-        <div className="container detail-layout detail-layout--contact">
-          <div style={{ display: "grid", gap: 16, alignContent: "start" }}>
-            <span className="eyebrow">Get in touch</span>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3vw, 2.5rem)" }}>Direct lines to our team</h2>
-            <a href={`mailto:${SITE.email}`} className="contact-card">
-              <span className="icon-badge">
-                <Icon name="mail" size={26} />
-              </span>
-              <span>
-                <strong>Email</strong>
-                <span>{SITE.email}</span>
-              </span>
-            </a>
-            <a href={`tel:${SITE.phoneHref}`} className="contact-card">
-              <span className="icon-badge">
-                <Icon name="phone" size={26} />
-              </span>
-              <span>
-                <strong>Phone &amp; WhatsApp</strong>
-                <span>{SITE.phone}</span>
-              </span>
-            </a>
-            <div className="contact-card">
-              <span className="icon-badge">
-                <Icon name="pin" size={26} />
-              </span>
-              <span>
-                <strong>Registered office</strong>
-                <span>United Kingdom — address available on request.</span>
-              </span>
+
+      <Band icon="mail" className="band--home" sub="Send a message below, or use the quotation form for detailed requirements">
+        &lsquo;Let&rsquo;s start the conversation&rsquo;
+      </Band>
+
+      <section style={{ paddingTop: 70 }}>
+        <details className="acc-row" open>
+          <summary className="wrap">Directors</summary>
+          <div className="wrap acc-row__body">
+            <div className="people">
+              {SITE.directors.map((d) => (
+                <div className="person" key={d.name}>
+                  <div className="person__photo" aria-hidden="true">
+                    {initials(d.name)}
+                  </div>
+                  <h3>{d.name}</h3>
+                  <p className="muted">{d.role}</p>
+                  <p>{d.bio}</p>
+                </div>
+              ))}
             </div>
-            <div className="contact-card">
-              <span className="icon-badge">
-                <Icon name="globe" size={26} />
-              </span>
-              <span>
-                <strong>Sourcing</strong>
-                <span>Partners in Uganda and East Africa</span>
-              </span>
-            </div>
-            <Link href="/get-a-quote" className="contact-card" style={{ background: "var(--forest-900)", borderColor: "var(--forest-900)" }}>
-              <span className="icon-badge icon-badge--gold">
-                <Icon name="document" size={26} />
-              </span>
-              <span>
-                <strong style={{ color: "var(--white)" }}>Need a price?</strong>
-                <span style={{ color: "rgb(255 255 255 / 0.7)" }}>Use the quotation form →</span>
-              </span>
+          </div>
+        </details>
+        <details className="acc-row" open>
+          <summary className="wrap">Send us a message</summary>
+          <div className="wrap acc-row__body">
+            <ContactForm />
+          </div>
+        </details>
+        <details className="acc-row">
+          <summary className="wrap">Quotations &amp; product enquiries</summary>
+          <div className="wrap acc-row__body">
+            <p>For pricing and availability, our quotation form captures product, grade, volume, packaging, freight and documentation requirements in one enquiry.</p>
+            <Link href="/get-a-quote" className="btn">
+              Request a quote
             </Link>
           </div>
-          <ContactForm />
-        </div>
+        </details>
+        <details className="acc-row">
+          <summary className="wrap">Suppliers &amp; sourcing partners</summary>
+          <div className="wrap acc-row__body">
+            <p>
+              Producers, cooperatives and processors in East Africa interested in supplying international markets can write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> with details of their
+              products, volumes and certifications.
+            </p>
+          </div>
+        </details>
+        <details className="acc-row">
+          <summary className="wrap">Logistics &amp; documentation</summary>
+          <div className="wrap acc-row__body">
+            <p>
+              Questions about an existing shipment, documents or delivery? Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> with your enquiry reference, or call {SITE.phone}.
+            </p>
+          </div>
+        </details>
       </section>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ContactPage",
-          url: `${SITE.url}/contact`,
-          mainEntity: { "@id": `${SITE.url}/#organization` },
-        }}
-      />
-    </>
+
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "ContactPage", url: `${SITE.url}/contact`, mainEntity: { "@id": `${SITE.url}/#organization` } }} />
+    </div>
   );
 }

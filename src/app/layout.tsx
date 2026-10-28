@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import { Figtree, Nunito_Sans } from "next/font/google";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -10,8 +10,8 @@ import { SITE } from "@/data/site";
 import { organizationJsonLd } from "@/lib/seo";
 import "./globals.css";
 
-const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap", axes: ["opsz", "SOFT"] });
-const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", display: "swap" });
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", weight: ["500", "600", "800", "900"], display: "swap" });
+const nunito = Nunito_Sans({ subsets: ["latin"], variable: "--font-nunito", weight: ["400", "600", "700", "800"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
@@ -26,14 +26,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0c2a1e",
+  themeColor: "#ffffff",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-GB" className={`${fraunces.variable} ${manrope.variable}`} suppressHydrationWarning>
+    <html lang="en-GB" className={`${figtree.variable} ${nunito.variable}`} suppressHydrationWarning>
       <head>
         {/* Enables reveal-on-scroll styles only when JavaScript runs. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />

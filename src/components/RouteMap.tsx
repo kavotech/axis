@@ -73,12 +73,13 @@ const PLACES = {
 const SEA_UK: [number, number][] = [[39.66, -4.04], [45, 12], [43.4, 12.6], [38, 20], [32.5, 29.9], [20, 34.5], [-5.6, 35.95], [-10, 37], [-10, 44], [-5.5, 48.5], [1.3, 51.6]];
 const SEA_GULF: [number, number][] = [[39.66, -4.04], [45, 12], [52, 14], [58.5, 21], [57, 25.6], [55.27, 25.2]];
 
-export function RouteMap({ compact = false }: { compact?: boolean }) {
-  const land = "rgb(255 255 255 / 0.07)";
-  const coast = "rgb(255 255 255 / 0.16)";
+export function RouteMap({ compact = false, light = false }: { compact?: boolean; light?: boolean }) {
+  const land = light ? "#3d8a3a" : "rgb(255 255 255 / 0.07)";
+  const coast = light ? "#2f6e2d" : "rgb(255 255 255 / 0.16)";
+  const label = light ? "#1f4d2b" : "rgb(255 255 255 / 0.88)";
   const [vx, vy] = px(33, -1);
   return (
-    <figure className="route-map" style={{ margin: 0 }}>
+    <figure className={light ? "route-map route-map--light" : "route-map"} style={{ margin: 0 }}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="route-title route-desc">
         <title id="route-title">Indicative supply routes from Uganda</title>
         <desc id="route-desc">
@@ -93,23 +94,23 @@ export function RouteMap({ compact = false }: { compact?: boolean }) {
             <stop offset="1" stopColor="#d8bd83" stopOpacity="0" />
           </radialGradient>
         </defs>
-        <rect width={W} height={H} fill="url(#grid)" />
+        {light ? null : <rect width={W} height={H} fill="url(#grid)" />}
         {[AFRICA, ARABIA, ASIA, TURKEY, EUROPE, SCANDINAVIA, IRELAND].map((p, i) => (
           <path key={i} d={poly(p)} fill={land} stroke={coast} strokeWidth="1" strokeLinejoin="round" />
         ))}
         <path d={poly(GB)} fill="rgb(216 189 131 / 0.25)" stroke="#d8bd83" strokeWidth="1.2" />
-        <ellipse cx={vx} cy={vy} rx="13" ry="11" fill="#071a12" stroke={coast} />
+        <ellipse cx={vx} cy={vy} rx="13" ry="11" fill={light ? "#f2f2f2" : "#071a12"} stroke={coast} />
         <circle cx={px(32.6, 1.3)[0]} cy={px(32.6, 1.3)[1]} r="70" fill="url(#glow)" />
-        <path d={poly(UGANDA)} fill="rgb(109 154 91 / 0.55)" stroke="#8fc27a" strokeWidth="1.4" />
+        <path d={poly(UGANDA)} fill={light ? "#d39b2a" : "rgb(109 154 91 / 0.55)"} stroke={light ? "#fff" : "#8fc27a"} strokeWidth="1.4" />
 
         {/* Sea routes */}
-        <path d={line(SEA_UK)} fill="none" stroke="#6d9a5b" strokeWidth="2" className="route-dash" />
-        <path d={line(SEA_GULF)} fill="none" stroke="#6d9a5b" strokeWidth="2" className="route-dash" />
+        <path d={line(SEA_UK)} fill="none" stroke={light ? "#1f4d2b" : "#6d9a5b"} strokeWidth="2" className="route-dash" />
+        <path d={line(SEA_GULF)} fill="none" stroke={light ? "#1f4d2b" : "#6d9a5b"} strokeWidth="2" className="route-dash" />
         {/* Road link Kampala → Mombasa (Northern Corridor) */}
-        <path d={line([[32.58, 0.35], [34.5, 0.3], [36.8, -1.3], [39.66, -4.04]])} fill="none" stroke="rgb(255 255 255 / 0.45)" strokeWidth="1.5" strokeDasharray="2 5" />
+        <path d={line([[32.58, 0.35], [34.5, 0.3], [36.8, -1.3], [39.66, -4.04]])} fill="none" stroke={light ? "#fff" : "rgb(255 255 255 / 0.45)"} strokeWidth="1.5" strokeDasharray="2 5" />
         {/* Air routes */}
-        <path d={arc([32.45, 0.05], [-0.45, 51.47], 0.22)} fill="none" stroke="#d8bd83" strokeWidth="2" className="route-dash" />
-        <path d={arc([32.45, 0.05], [55.36, 25.25], -0.25)} fill="none" stroke="#d8bd83" strokeWidth="2" className="route-dash" />
+        <path d={arc([32.45, 0.05], [-0.45, 51.47], 0.22)} fill="none" stroke={light ? "#d9772b" : "#d8bd83"} strokeWidth="2.2" className="route-dash" />
+        <path d={arc([32.45, 0.05], [55.36, 25.25], -0.25)} fill="none" stroke={light ? "#d9772b" : "#d8bd83"} strokeWidth="2.2" className="route-dash" />
 
         {Object.entries(PLACES).map(([k, p]) => {
           const [x, y] = px(...p.ll);
@@ -117,13 +118,13 @@ export function RouteMap({ compact = false }: { compact?: boolean }) {
           return (
             <g key={k}>
               <circle cx={x} cy={y} r={k === "kampala" ? 7 : 5} fill={k === "kampala" ? "#d8bd83" : "#fff"} stroke="#071a12" strokeWidth="2" />
-              <text x={x + p.dx} y={y + p.dy} fill="rgb(255 255 255 / 0.88)" fontSize="15" fontFamily="var(--font-manrope), sans-serif" fontWeight="600" textAnchor={p.anchor as "start" | "end"}>
+              <text x={x + p.dx} y={y + p.dy} fill={label} fontSize="15" fontFamily="var(--font-manrope), sans-serif" fontWeight="600" textAnchor={p.anchor as "start" | "end"}>
                 {p.label}
               </text>
             </g>
           );
         })}
-        <text x={px(31.5, -3.2)[0]} y={px(31.5, -3.2)[1] + 6} fill="#8fc27a" fontSize="13" fontWeight="700" letterSpacing="3" textAnchor="end" fontFamily="var(--font-manrope), sans-serif">
+        <text x={px(31.5, -3.2)[0]} y={px(31.5, -3.2)[1] + 6} fill={light ? "#7b4e32" : "#8fc27a"} fontSize="13" fontWeight="700" letterSpacing="3" textAnchor="end" fontFamily="var(--font-manrope), sans-serif">
           UGANDA
         </text>
       </svg>
