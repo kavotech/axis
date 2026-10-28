@@ -1,24 +1,16 @@
+import Image from "next/image";
 import Link from "next/link";
 
-/** Vector rendition of the Axis Agro wave mark. */
-export function LogoMark({ className = "brand__mark", light = false }: { className?: string; light?: boolean }) {
-  return (
-    <svg className={className} viewBox="0 0 48 42" aria-hidden="true" focusable="false">
-      <path d="M13 14.5c7.5-5.5 14.5 3.6 23-1.6l7.5-5.4-3.4 8.6c-8.2 5.7-15.3-2.8-23.4 1.6Z" fill={light ? "#8fc27a" : "#3d8a3a"} />
-      <path d="M8.5 23.5c8-5.6 15.6 3.5 24.4-1.8l5.3-3.6-3.3 7.6c-8.8 5.7-16.4-2.8-24.6 1.8Z" fill={light ? "#c9cfca" : "#6f7672"} />
-      <path d="M4 34c6.4-5.4 13.2-1.4 20.6-2.2-6.3-3.6-13.6-3.4-20.6 2.2Z" fill={light ? "#9aa29c" : "#4b524e"} />
-    </svg>
-  );
+/** The Axis Agro wave mark on its own (transparent PNG). */
+export function LogoMark({ className = "", size = 104 }: { className?: string; size?: number }) {
+  return <Image src="/brand/axis-mark.png" alt="" width={size} height={Math.round((size * 201) / 373)} className={className} priority />;
 }
 
+/** Full Axis Agro International logo — for light backgrounds. */
 export function Logo() {
   return (
     <Link href="/" className="brand" aria-label="Axis Agro International — home">
-      <LogoMark />
-      <span className="brand__text">
-        <span className="brand__name">Axis Agro</span>
-        <span className="brand__sub">International Ltd</span>
-      </span>
+      <Image src="/brand/axis-logo.png" alt="Axis Agro International" width={628} height={325} className="brand__logo" priority sizes="140px" />
     </Link>
   );
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/data/categories";
 import { SITE } from "@/data/site";
@@ -49,7 +50,7 @@ export function Footer() {
       <div className="wrap">
         <div className="footer-top footer-top--wide">
           <div>
-            <h2>About Axis Agro</h2>
+            <Image src="/brand/axis-logo.png" alt="Axis Agro International" width={628} height={325} className="footer-logo" sizes="130px" />
             <p>{SITE.description}</p>
             <div className="footer-social" style={{ marginTop: 14 }}>
               <a href={`mailto:${SITE.emails.general}`} aria-label="Email Axis Agro">

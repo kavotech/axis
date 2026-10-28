@@ -2591,3 +2591,19 @@ html:not(.js) .reveal {
     grid-column: 1 / -1;
   }
 }
+
+/* Brand logo */
+.brand__logo {
+  height: 66px;
+  width: auto;
+}
+.footer-logo {
+  height: 62px;
+  width: auto;
+  margin-bottom: 14px;
+}
+@media (max-width: 767px) {
+  .brand__logo {
+    height: 52px;
+  }
+}

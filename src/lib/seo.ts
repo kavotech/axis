@@ -39,7 +39,7 @@ export const organizationJsonLd = {
   name: SITE.legalName,
   alternateName: SITE.shortName,
   url: SITE.url,
-  logo: `${SITE.url}/icon.svg`,
+  logo: `${SITE.url}/brand/axis-logo.png`,
   email: SITE.email,
   telephone: SITE.phoneHref,
   description: SITE.description,

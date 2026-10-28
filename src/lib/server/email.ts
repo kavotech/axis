@@ -80,9 +80,8 @@ function layout(opts: { title: string; preheader: string; body: string }) {
 <div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(opts.preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.cream};"><tr><td align="center" style="padding:24px 12px;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid ${C.line};">
-<tr><td style="background:${C.forest};padding:28px 32px;">
-  <div style="font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#ffffff;letter-spacing:-0.2px;">Axis Agro</div>
-  <div style="font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#d8bd83;margin-top:4px;">International Ltd</div>
+<tr><td style="background:#ffffff;padding:24px 32px;border-bottom:1px solid ${C.line};">
+  <img src="${SITE.url}/brand/axis-logo.png" width="140" height="72" alt="Axis Agro International" style="display:block;border:0;width:140px;height:auto;">
 </td></tr>
 <tr><td style="height:4px;background:${C.gold};font-size:0;line-height:0;">&nbsp;</td></tr>
 <tr><td style="padding:32px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:${C.ink};">

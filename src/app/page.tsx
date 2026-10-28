@@ -24,7 +24,7 @@ export default function HomePage() {
         </div>
         <div className="hero__inner">
           <span className="hero__badge">
-            <LogoMark className="" />
+            <LogoMark size={104} />
           </span>
           <h1 id="hero-title" className="hero__title">
             Axis Agro
