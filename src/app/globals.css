@@ -2607,3 +2607,87 @@ html:not(.js) .reveal {
     height: 52px;
   }
 }
+
+/* Leader profile */
+.cards--4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1024px) { .cards--4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .cards--4 { grid-template-columns: 1fr; } }
+.profile-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: 60px;
+  align-items: start;
+}
+.profile-bio p { font-size: 17px; line-height: 1.75; }
+.profile-bio .lead { font-size: 21px; line-height: 1.55; color: var(--ink); }
+.profile-bio strong { color: var(--accent); }
+.eyebrow-label {
+  font-family: var(--font-head);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 13px;
+  color: var(--leaf);
+  margin-bottom: 6px;
+}
+.facts-panel {
+  position: sticky;
+  top: 120px;
+  background: var(--grey-2);
+  border-top: 6px solid var(--lime);
+  padding: 30px 28px;
+}
+.facts-panel h3 { font-size: 20px; margin-bottom: 14px; color: var(--ink); }
+.facts-panel dl { margin: 0; }
+.facts-panel dl > div { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); }
+.facts-panel dt {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+.facts-panel dd { margin: 2px 0 0; font-size: 16px; color: var(--ink); }
+.facts-panel__mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  word-break: break-all;
+}
+.facts-panel__mail svg { width: 20px; height: 20px; flex-shrink: 0; }
+.pullquote {
+  background: var(--forest);
+  color: #fff;
+  padding: 90px 0;
+  position: relative;
+  overflow: hidden;
+}
+.pullquote figure { max-width: 900px; margin: 0 auto; text-align: center; position: relative; }
+.pullquote__mark {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 140px;
+  line-height: 0.6;
+  color: var(--lime);
+  height: 60px;
+}
+.pullquote blockquote { margin: 0; }
+.pullquote blockquote p {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(21px, 2.6vw, 30px);
+  line-height: 1.45;
+  color: #fff;
+}
+.pullquote figcaption { margin-top: 26px; display: flex; flex-direction: column; gap: 4px; }
+.pullquote figcaption strong { color: var(--lime); font-size: 18px; }
+.pullquote figcaption span { color: rgba(255,255,255,0.8); font-size: 15px; }
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; gap: 36px; }
+  .facts-panel { position: static; }
+  .pullquote { padding: 60px 0; }
+}

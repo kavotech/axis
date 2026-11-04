@@ -84,7 +84,7 @@ export function DirectorsPage() {
               {l.bio.slice(0, 2).map((b) => (
                 <p key={b.slice(0, 20)}>{b}</p>
               ))}
-              <h3 className="h-sm text-accent">Core responsibilities</h3>
+              <h3 className="h-sm text-accent">{l.listTitle ?? "Core responsibilities"}</h3>
               <ul className="ticks">
                 {l.responsibilities.map((r) => (
                   <li key={r}>{r}</li>
@@ -140,8 +140,8 @@ export function DirectorsPage() {
             <h2 className="h-lg">The UK–Uganda relationship</h2>
             <p className="lead">Our structure mirrors the trade itself.</p>
             <p>
-              In the United Kingdom, Oliver leads buyer relationships, commercial terms and international coordination. In Uganda, Micah leads sourcing, supplier relationships, quality coordination
-              and export preparation. Enquiries move between the two every day, so that what we quote reflects what can genuinely be delivered.
+              Oliver founded Axis Agro in the United Kingdom to connect Uganda&rsquo;s agricultural products with British and international buyers. In Uganda, Micah leads sourcing, supplier
+              relationships, quality coordination and export preparation. Enquiries move between the two every day, so that what we quote reflects what can genuinely be delivered.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -195,8 +195,23 @@ export function DirectorsPage() {
   );
 }
 
+/** Renders a paragraph with the leader's highlight phrase in bold. */
+function BioPara({ text, highlight }: { text: string; highlight?: string }) {
+  if (!highlight || !text.includes(highlight)) return <p>{text}</p>;
+  const [a, b] = text.split(highlight);
+  return (
+    <p>
+      {a}
+      <strong>{highlight}</strong>
+      {b}
+    </p>
+  );
+}
+
 export function LeaderProfile({ leader }: { leader: Leader }) {
   const other = LEADERS.find((l) => l.slug !== leader.slug)!;
+  const first = leader.name.split(" ")[0];
+  const [intro, ...rest] = leader.bio;
   return (
     <div className="accent-forest">
       <PageTop
@@ -214,34 +229,106 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
           <>
             <p className="leader-card__role">{leader.role}</p>
             <p className="lead">{leader.summary}</p>
-            <a href={`mailto:${leader.email}`} className="btn">
-              {leader.email}
-            </a>
+            <div className="btn-row">
+              <a href={`mailto:${leader.email}`} className="btn">
+                Email {first}
+              </a>
+              <a href="#biography" className="btn btn--outline">
+                Read biography
+              </a>
+            </div>
           </>
         }
         visual={<Portrait leader={leader} size={260} />}
       />
       <Band icon={leader.icon} className="band--home">
-        &lsquo;{leader.short}&rsquo;
+        &lsquo;{leader.short} &mdash; {SITE.name}&rsquo;
       </Band>
-      <section className="section">
-        <div className="wrap split split--top">
-          <Reveal>
-            <h2 className="h-lg">Biography</h2>
-            {leader.bio.map((b) => (
-              <p key={b.slice(0, 20)}>{b}</p>
+
+      <section className="section" id="biography">
+        <div className="wrap profile-grid">
+          <Reveal className="profile-bio">
+            <p className="eyebrow-label">Biography</p>
+            <h2 className="h-lg">About {first}</h2>
+            <p className="lead">{intro}</p>
+            {rest.map((b) => (
+              <BioPara key={b.slice(0, 24)} text={b} highlight={leader.highlight} />
             ))}
           </Reveal>
           <Reveal delay={0.1}>
-            <h3 className="h-sm text-accent">Areas of responsibility</h3>
+            <aside className="facts-panel" aria-label={`${leader.name} at a glance`}>
+              <h3>At a glance</h3>
+              <dl>
+                {leader.facts.map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <a href={`mailto:${leader.email}`} className="facts-panel__mail">
+                <Icon name="mail" strokeWidth={2} />
+                {leader.email}
+              </a>
+            </aside>
+          </Reveal>
+        </div>
+      </section>
+
+      {leader.quote && (
+        <section className="pullquote">
+          <div className="wrap">
+            <Reveal>
+              <figure>
+                <span className="pullquote__mark" aria-hidden="true">
+                  &ldquo;
+                </span>
+                <blockquote>
+                  <p>{leader.quote}</p>
+                </blockquote>
+                <figcaption>
+                  <strong>{leader.name}</strong>
+                  <span>
+                    {leader.short}, {SITE.name}
+                  </span>
+                </figcaption>
+              </figure>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
+      <section className="section section--accent">
+        <div className="wrap">
+          <div className="cards-box page-box--marker">
+            <h2 className="section-title">{leader.quote ? "What the company is built on" : "Focus areas"}</h2>
+            <div className="cards cards--4">
+              {leader.values.map((v) => (
+                <div className="card" key={v.title}>
+                  <span className="card__icon">
+                    <Icon name={v.icon} strokeWidth={2} />
+                  </span>
+                  <h3>{v.title}</h3>
+                  <p>{v.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap split split--top">
+          <Reveal>
+            <h2 className="h-md text-accent">{leader.listTitle ?? "Areas of responsibility"}</h2>
             <ul className="ticks">
               {leader.responsibilities.map((r) => (
                 <li key={r}>{r}</li>
               ))}
             </ul>
-            <h3 className="h-sm text-accent" style={{ marginTop: 24 }}>
-              Areas of expertise
-            </h3>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <h2 className="h-md text-accent">{leader.list2Title ?? "Areas of expertise"}</h2>
             <ul className="ticks">
               {leader.expertise.map((r) => (
                 <li key={r}>{r}</li>
@@ -250,6 +337,7 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
           </Reveal>
         </div>
       </section>
+
       <section className="section section--grey">
         <div className="wrap">
           <h2 className="section-title section-title--center">Also on the leadership team</h2>
@@ -260,16 +348,21 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
                 <h3>{other.name}</h3>
                 <p className="leader-card__role">{other.short}</p>
                 <p>{other.summary}</p>
-                <Link href={`/company/directors/${other.slug}`} className="btn btn--sm">
-                  Read profile
-                </Link>
+                <div className="btn-row">
+                  <Link href={`/company/directors/${other.slug}`} className="btn btn--sm">
+                    Read profile
+                  </Link>
+                  <Link href="/company/directors" className="btn btn--sm btn--outline">
+                    All directors
+                  </Link>
+                </div>
               </div>
             </article>
           </div>
         </div>
       </section>
-      <CtaBand href={`mailto:${leader.email}`} label={`Email ${leader.name.split(" ")[0]}`}>
-        &lsquo;Get in touch with {leader.name.split(" ")[0]}&rsquo;
+      <CtaBand href={`mailto:${leader.email}`} label={`Email ${first}`}>
+        &lsquo;Get in touch with {first}&rsquo;
       </CtaBand>
       <JsonLd
         data={{
@@ -279,6 +372,7 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
           jobTitle: leader.short,
           email: `mailto:${leader.email}`,
           description: leader.summary,
+          url: `${SITE.url}/company/directors/${leader.slug}`,
           worksFor: { "@type": "Organization", name: SITE.legalName, url: SITE.url },
         }}
       />

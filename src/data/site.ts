@@ -8,9 +8,19 @@ export type Leader = {
   short: string;
   email: string;
   summary: string;
+  /** Biography paragraphs. Any occurrence of `highlight` is rendered in bold. */
   bio: string[];
+  highlight?: string;
+  quote?: string;
+  /** Key facts for the "At a glance" panel. */
+  facts: [string, string][];
+  /** Heading for the main list (defaults to "Areas of responsibility"). */
+  listTitle?: string;
   responsibilities: string[];
+  /** Heading for the second list (defaults to "Areas of expertise"). */
+  list2Title?: string;
   expertise: string[];
+  values: { title: string; text: string; icon: IconName }[];
   icon: IconName;
 };
 
@@ -18,25 +28,48 @@ export const LEADERS: Leader[] = [
   {
     slug: "oliver-alinaitwe",
     name: "Oliver Amanya Alinaitwe",
-    role: "Founder & Head of UK Operations — Axis Agro International Ltd",
-    short: "Founder & Head of UK Operations",
+    role: "Founder | Axis Agro International Ltd",
+    short: "Founder",
     email: "oliver@axisagro.co.uk",
-    summary: "Connects Axis Agro's sourcing operations in Uganda with buyers in the United Kingdom and international markets.",
+    summary:
+      "A young British-born entrepreneur and the Founder of Axis Agro International Ltd, driven by a passion for international trade, agriculture and connecting African businesses with global markets.",
     bio: [
-      "Oliver founded Axis Agro International to give UK and international buyers a direct, accountable link to Ugandan produce. From the United Kingdom he leads the company's commercial operations — building relationships with importers, wholesalers, distributors and food businesses, and making sure each enquiry is matched to what partners in Uganda can genuinely supply.",
-      "His work sits at the point where origin meets market: translating buyer specifications into sourcing requirements, agreeing commercial terms and Incoterms, and coordinating documentation, freight and delivery with logistics partners. He also leads the company's strategic partnerships and its digital presence, so that buyers can find, specify and request products easily.",
-      "Oliver's focus is long-term trade relationships built on clear communication and honest information about availability, quality and timing.",
+      "Oliver Amanya Alinaitwe is a young British-born entrepreneur and the Founder of Axis Agro International Ltd, driven by a passion for international trade, agriculture and connecting African businesses with global markets.",
+      "Born in the United Kingdom, Oliver developed his interest in agriculture and international business after moving to Uganda as a teenager. During his time in the country, he recognised the enormous potential of Uganda's agricultural sector, from its fertile land and favourable climate to the quality and variety of fresh produce grown by local farmers.",
+      "Coming from a family with a strong background in exports and international trade, Oliver was exposed to the industry from a young age. This experience, combined with his own entrepreneurial ambitions, inspired him to establish Axis Agro International Ltd, a UK-based company focused on connecting Uganda's agricultural products with buyers across the United Kingdom and international markets.",
+      "Oliver strongly believes that Uganda has far more to offer the world than many people realise. With growing demand in the UK for fresh, high-quality agricultural products, he saw an opportunity to build a business that not only supplies British markets but also creates valuable opportunities for Ugandan farmers, producers and exporters.",
+      "Through Axis Agro International Ltd, his vision is to strengthen trade relationships between Uganda and the United Kingdom, making Ugandan agricultural products more accessible, competitive and recognised in international markets.",
+      "Despite his young age, Oliver is committed to building a company founded on reliability, quality, transparency and long-term partnerships. He believes that age should never limit ambition and that the next generation of entrepreneurs has an important role to play in shaping the future of international trade.",
     ],
+    highlight: "Uganda has far more to offer the world than many people realise",
+    quote:
+      "Having been born in the UK and experienced life in Uganda, I've been fortunate enough to see the opportunities on both sides. Uganda has incredible agricultural potential, and I believe its products deserve a much stronger presence in the British market. Axis Agro is my way of helping make that happen.",
+    facts: [
+      ["Role", "Founder"],
+      ["Company", "Axis Agro International Ltd"],
+      ["Born", "United Kingdom"],
+      ["Uganda", "Moved there as a teenager"],
+      ["Background", "Family background in exports and international trade"],
+    ],
+    listTitle: "His vision",
     responsibilities: [
-      "UK business development",
-      "International buyer relationships",
-      "Strategic partnerships",
-      "UK commercial operations",
-      "Market expansion",
-      "International trade coordination",
-      "Digital business development",
+      "Strengthen trade relationships between Uganda and the United Kingdom",
+      "Make Ugandan agricultural products more accessible, competitive and recognised",
+      "Supply British markets with fresh, high-quality agricultural products",
+      "Create valuable opportunities for Ugandan farmers, producers and exporters",
     ],
-    expertise: ["Buyer specifications and commercial terms", "Import and export coordination", "Trade documentation and compliance coordination", "Partnership development between the UK and Uganda"],
+    list2Title: "What drives him",
+    expertise: [
+      "International trade and agriculture",
+      "Connecting African businesses with global markets",
+      "The belief that age should never limit ambition",
+    ],
+    values: [
+      { title: "Reliability", text: "A company buyers can depend on.", icon: "clock" },
+      { title: "Quality", text: "Fresh, high-quality agricultural products.", icon: "shield" },
+      { title: "Transparency", text: "Open, honest dealings on both sides of the trade.", icon: "route" },
+      { title: "Long-term partnerships", text: "Relationships built to last with buyers and producers.", icon: "handshake" },
+    ],
     icon: "globe",
   },
   {
@@ -50,6 +83,19 @@ export const LEADERS: Leader[] = [
       "Micah leads Axis Agro's sourcing and operations in Uganda. He works directly with producers, cooperatives, aggregators and exporters to identify supply that can meet buyers' specifications, and he maintains the day-to-day relationships that make reliable sourcing possible.",
       "His role is practical and hands-on: coordinating coffee and commodity procurement, checking quality and grading at origin, organising local export preparation, and liaising with suppliers and logistics providers so that consignments are packed, documented and moved on time.",
       "Micah's knowledge of Ugandan agricultural supply chains — from smallholder farms to export warehouses — is central to how Axis Agro confirms what can be supplied before it is promised to a buyer.",
+    ],
+    highlight: "from smallholder farms to export warehouses",
+    facts: [
+      ["Role", "Strategic Agricultural Sourcing & Uganda Operations"],
+      ["Company", "Axis Agro International Ltd"],
+      ["Based in", "Uganda"],
+      ["Contact", "uganda@axisagro.co.uk"],
+    ],
+    values: [
+      { title: "Sourcing", text: "Matching producers and partners to each buyer's specification.", icon: "sourcing" },
+      { title: "Quality", text: "Grading and quality checks at origin.", icon: "shield" },
+      { title: "Relationships", text: "Day-to-day contact with producers, cooperatives and exporters.", icon: "handshake" },
+      { title: "Export preparation", text: "Packing, documents and inland logistics on time.", icon: "box" },
     ],
     responsibilities: [
       "Uganda agricultural sourcing",
@@ -99,7 +145,7 @@ export const CONTACT_DIRECTORY: { title: string; email: string; text: string; ic
   { title: "General enquiries", email: SITE.emails.general, text: "Product questions, quotations and anything else.", icon: "mail" },
   { title: "Uganda operations & sourcing", email: SITE.emails.uganda, text: "Suppliers, producers and sourcing in Uganda.", icon: "sourcing" },
   { title: "Logistics & international operations", email: SITE.emails.operations, text: "Shipments, documentation and freight.", icon: "ship" },
-  { title: "Director — UK operations", email: SITE.emails.director, text: "Strategic partnerships and senior commercial matters.", icon: "handshake" },
+  { title: "Founder", email: SITE.emails.director, text: "Strategic partnerships and senior commercial matters.", icon: "handshake" },
 ];
 
 export type NavItem = {

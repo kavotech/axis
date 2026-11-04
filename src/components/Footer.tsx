@@ -105,7 +105,7 @@ export function Footer() {
                 <a href={`mailto:${SITE.emails.operations}`}>{SITE.emails.operations}</a>
               </li>
               <li>
-                Director — UK operations
+                Founder
                 <br />
                 <a href={`mailto:${SITE.emails.director}`}>{SITE.emails.director}</a>
               </li>
