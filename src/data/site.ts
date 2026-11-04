@@ -112,6 +112,8 @@ export const LEADERS: Leader[] = [
       "Supplier and logistics coordination",
     ],
     expertise: ["Ugandan coffee and commodity supply chains", "Grading and quality checks at origin", "Supplier relationship management", "Export preparation and inland logistics"],
+    photo: "/images/leaders/micah-bamutura.webp",
+    photoSquare: "/images/leaders/micah-bamutura-square.webp",
     icon: "sourcing",
   },
 ];
