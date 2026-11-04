@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { LEADERS, SITE, type Leader } from "@/data/site";
 import { Icon } from "./Icon";
@@ -11,11 +12,28 @@ const initials = (n: string) =>
     .slice(0, 2)
     .join("");
 
-/** Portrait placeholder — initials only; no stock photos are presented as the directors. */
+/** Circular portrait: the leader's photo when supplied, otherwise initials (no stock photos are presented as the directors). */
 export function Portrait({ leader, size = 220 }: { leader: Leader; size?: number }) {
+  if (leader.photoSquare)
+    return (
+      <div className="portrait portrait--photo" style={{ width: size, height: size }}>
+        <Image src={leader.photoSquare} alt={`Portrait of ${leader.name}`} fill sizes={`${size}px`} />
+      </div>
+    );
   return (
     <div className="portrait" style={{ width: size, height: size }} role="img" aria-label={`Portrait placeholder for ${leader.name}`}>
       <span>{initials(leader.name)}</span>
+    </div>
+  );
+}
+
+/** Large hero image: full cut-out photo over a brand-coloured disc, or the circular portrait. */
+function HeroPortrait({ leader }: { leader: Leader }) {
+  if (!leader.photo) return <Portrait leader={leader} size={260} />;
+  return (
+    <div className="hero-portrait">
+      <span className="hero-portrait__disc" aria-hidden="true" />
+      <Image src={leader.photo} alt={`${leader.name}, ${leader.short} of ${SITE.name}`} width={760} height={1013} priority sizes="(max-width: 900px) 80vw, 420px" />
     </div>
   );
 }
@@ -72,9 +90,11 @@ export function DirectorsPage() {
           <div className={`wrap split split--top${i % 2 ? " split--flip" : ""}`}>
             <Reveal className="leader-profile__media">
               <Portrait leader={l} size={300} />
-              <p className="muted" style={{ fontSize: 13, marginTop: 10 }}>
-                Photograph to follow
-              </p>
+              {!l.photoSquare && (
+                <p className="muted" style={{ fontSize: 13, marginTop: 10 }}>
+                  Photograph to follow
+                </p>
+              )}
             </Reveal>
             <Reveal delay={0.1}>
               <h2 className="h-lg" style={{ marginBottom: 4 }}>
@@ -239,7 +259,7 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
             </div>
           </>
         }
-        visual={<Portrait leader={leader} size={260} />}
+        visual={<HeroPortrait leader={leader} />}
       />
       <Band icon={leader.icon} className="band--home">
         &lsquo;{leader.short} &mdash; {SITE.name}&rsquo;

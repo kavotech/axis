@@ -21,6 +21,9 @@ export type Leader = {
   list2Title?: string;
   expertise: string[];
   values: { title: string; text: string; icon: IconName }[];
+  /** Transparent cut-out photo (hero) and square head-and-shoulders crop (cards). */
+  photo?: string;
+  photoSquare?: string;
   icon: IconName;
 };
 
@@ -70,6 +73,8 @@ export const LEADERS: Leader[] = [
       { title: "Transparency", text: "Open, honest dealings on both sides of the trade.", icon: "route" },
       { title: "Long-term partnerships", text: "Relationships built to last with buyers and producers.", icon: "handshake" },
     ],
+    photo: "/images/leaders/oliver-alinaitwe.webp",
+    photoSquare: "/images/leaders/oliver-alinaitwe-square.webp",
     icon: "globe",
   },
   {
