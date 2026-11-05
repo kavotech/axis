@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { HomeExtras } from "@/components/HomeExtras";
 import { LogoMark } from "@/components/Logo";
+import { PromoVideo } from "@/components/PromoVideo";
 import { Band, Circles, Reveal } from "@/components/ui";
 import { SITE } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
@@ -81,7 +82,10 @@ export default function HomePage() {
         ]}
       />
 
-      {/* 5+ — Expanded content */}
+      {/* 5 — Promotional video */}
+      <PromoVideo />
+
+      {/* 6+ — Expanded content */}
       <HomeExtras />
     </div>
   );

@@ -11,6 +11,7 @@ import { LEADERS, SITE } from "@/data/site";
  * instead of stamping every page with the build time.
  */
 const UPDATED = {
+  home: "2026-11-05",
   catalogue: "2026-10-28",
   company: "2026-10-28",
   directors: "2026-11-04",
@@ -31,9 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       .filter((i): i is string => Boolean(i))
       .map((i) => `${SITE.url}${i}`),
   });
-  const { catalogue, company, directors, insights, legal } = UPDATED;
+  const { home, catalogue, company, directors, insights, legal } = UPDATED;
   return [
-    page("", 1, company, "weekly"),
+    page("", 1, home, "weekly"),
     page("/products", 0.9, catalogue, "weekly"),
     page("/get-a-quote", 0.9, company),
     ...CATEGORIES.map((c) => page(`/products/${c.slug}`, 0.8, catalogue, "monthly", c.image)),

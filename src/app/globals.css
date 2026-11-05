@@ -2726,3 +2726,14 @@ html:not(.js) .reveal {
   object-position: bottom;
   filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.18));
 }
+
+/* Promotional video */
+.promo-video__lead { max-width: 640px; margin: 10px auto 28px; text-align: center; }
+.promo-video__frame { margin: 0 auto; background: #000; overflow: hidden; box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18); }
+.promo-video__frame video { display: block; width: 100%; height: auto; }
+.promo-video__frame--wide { max-width: 1000px; aspect-ratio: 16 / 9; }
+.promo-video__frame--tall { display: none; max-width: 340px; aspect-ratio: 9 / 16; }
+@media (max-width: 767px) {
+  .promo-video__frame--wide { display: none; }
+  .promo-video__frame--tall { display: block; }
+}
