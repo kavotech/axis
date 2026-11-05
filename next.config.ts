@@ -11,8 +11,9 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [640, 828, 1080, 1280, 1600, 2000],
+    // Images are pre-compressed WebP in public/images; Vercel's optimiser quota
+    // is exhausted (402 on uncached sizes), so serve them as static files.
+    unoptimized: true,
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

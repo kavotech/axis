@@ -17,7 +17,7 @@ export function Portrait({ leader, size = 220 }: { leader: Leader; size?: number
   if (leader.photoSquare)
     return (
       <div className="portrait portrait--photo" style={{ width: size, height: size }}>
-        <Image src={leader.photoSquare} alt={`Portrait of ${leader.name}`} fill unoptimized />
+        <Image src={leader.photoSquare} alt={`Portrait of ${leader.name}`} fill sizes={`${size}px`} />
       </div>
     );
   return (
@@ -33,7 +33,7 @@ function HeroPortrait({ leader }: { leader: Leader }) {
   return (
     <div className="hero-portrait">
       <span className="hero-portrait__disc" aria-hidden="true" />
-      <Image src={leader.photo} alt={`${leader.name}, ${leader.short} of ${SITE.name}`} width={760} height={1013} priority unoptimized />
+      <Image src={leader.photo} alt={`${leader.name}, ${leader.short} of ${SITE.name}`} width={760} height={1013} priority />
     </div>
   );
 }
