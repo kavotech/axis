@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { LEADERS, SITE, type Leader } from "@/data/site";
+import { LEADERS, SHOW_FOUNDER, SITE, type Leader } from "@/data/site";
 import { Icon } from "./Icon";
 import { Band, CtaBand, JsonLd, PageTop, Reveal } from "./ui";
 
@@ -13,15 +13,34 @@ const initials = (n: string) =>
     .join("");
 
 /** Circular portrait: the leader's photo when supplied, otherwise initials (no stock photos are presented as the directors). */
-export function Portrait({ leader, size = 220 }: { leader: Leader; size?: number }) {
+export function Portrait({
+  leader,
+  size = 220,
+}: {
+  leader: Leader;
+  size?: number;
+}) {
   if (leader.photoSquare)
     return (
-      <div className="portrait portrait--photo" style={{ width: size, height: size }}>
-        <Image src={leader.photoSquare} alt={`Portrait of ${leader.name}`} fill sizes={`${size}px`} />
+      <div
+        className="portrait portrait--photo"
+        style={{ width: size, height: size }}
+      >
+        <Image
+          src={leader.photoSquare}
+          alt={`Portrait of ${leader.name}`}
+          fill
+          sizes={`${size}px`}
+        />
       </div>
     );
   return (
-    <div className="portrait" style={{ width: size, height: size }} role="img" aria-label={`Portrait placeholder for ${leader.name}`}>
+    <div
+      className="portrait"
+      style={{ width: size, height: size }}
+      role="img"
+      aria-label={`Portrait placeholder for ${leader.name}`}
+    >
       <span>{initials(leader.name)}</span>
     </div>
   );
@@ -33,7 +52,13 @@ function HeroPortrait({ leader }: { leader: Leader }) {
   return (
     <div className="hero-portrait">
       <span className="hero-portrait__disc" aria-hidden="true" />
-      <Image src={leader.photo} alt={`${leader.name}, ${leader.short} of ${SITE.name}`} width={760} height={1013} priority />
+      <Image
+        src={leader.photo}
+        alt={`${leader.name}, ${leader.short} of ${SITE.name}`}
+        width={760}
+        height={1013}
+        priority
+      />
     </div>
   );
 }
@@ -50,10 +75,16 @@ export function LeadershipRow() {
               <p className="leader-card__role">{l.short}</p>
               <p>{l.summary}</p>
               <div className="btn-row">
-                <Link href={`/company/directors/${l.slug}`} className="btn btn--sm">
+                <Link
+                  href={`/company/directors/${l.slug}`}
+                  className="btn btn--sm"
+                >
                   Read profile
                 </Link>
-                <a href={`mailto:${l.email}`} className="btn btn--sm btn--outline">
+                <a
+                  href={`mailto:${l.email}`}
+                  className="btn btn--sm btn--outline"
+                >
                   {l.email}
                 </a>
               </div>
@@ -77,8 +108,19 @@ export function DirectorsPage() {
           { name: "Company", href: "/about" },
           { name: "Our directors", href: "/company/directors" },
         ]}
-        left={<p className="lead">Axis Agro is led by a small team that spans the two ends of the supply chain: commercial operations in the United Kingdom and sourcing on the ground in Uganda.</p>}
-        right={<p>Buyers deal with people who know both the market and the origin — and who can be reached directly.</p>}
+        left={
+          <p className="lead">
+            Axis Agro is led by a small team that spans the two ends of the
+            supply chain: commercial operations in the United Kingdom and
+            sourcing on the ground in Uganda.
+          </p>
+        }
+        right={
+          <p>
+            Buyers deal with people who know both the market and the origin —
+            and who can be reached directly.
+          </p>
+        }
       />
 
       <Band icon="users" className="band--home">
@@ -86,8 +128,13 @@ export function DirectorsPage() {
       </Band>
 
       {LEADERS.map((l, i) => (
-        <section key={l.slug} className={`section${i % 2 ? " section--grey" : ""}`}>
-          <div className={`wrap split split--top${i % 2 ? " split--flip" : ""}`}>
+        <section
+          key={l.slug}
+          className={`section${i % 2 ? " section--grey" : ""}`}
+        >
+          <div
+            className={`wrap split split--top${i % 2 ? " split--flip" : ""}`}
+          >
             <Reveal className="leader-profile__media">
               <Portrait leader={l} size={300} />
               {!l.photoSquare && (
@@ -104,17 +151,25 @@ export function DirectorsPage() {
               {l.bio.slice(0, 2).map((b) => (
                 <p key={b.slice(0, 20)}>{b}</p>
               ))}
-              <h3 className="h-sm text-accent">{l.listTitle ?? "Core responsibilities"}</h3>
+              <h3 className="h-sm text-accent">
+                {l.listTitle ?? "Core responsibilities"}
+              </h3>
               <ul className="ticks">
                 {l.responsibilities.map((r) => (
                   <li key={r}>{r}</li>
                 ))}
               </ul>
               <div className="btn-row">
-                <Link href={`/company/directors/${l.slug}`} className="btn btn--sm">
+                <Link
+                  href={`/company/directors/${l.slug}`}
+                  className="btn btn--sm"
+                >
                   Full profile
                 </Link>
-                <a href={`mailto:${l.email}`} className="btn btn--sm btn--outline">
+                <a
+                  href={`mailto:${l.email}`}
+                  className="btn btn--sm btn--outline"
+                >
                   Email {l.name.split(" ")[0]}
                 </a>
               </div>
@@ -133,21 +188,30 @@ export function DirectorsPage() {
                   <Icon name="handshake" strokeWidth={2} />
                 </span>
                 <h3>Accessible</h3>
-                <p>Buyers and suppliers can reach the people making decisions directly.</p>
+                <p>
+                  Buyers and suppliers can reach the people making decisions
+                  directly.
+                </p>
               </div>
               <div className="card">
                 <span className="card__icon">
                   <Icon name="shield" strokeWidth={2} />
                 </span>
                 <h3>Accurate</h3>
-                <p>We confirm what can be supplied before it is promised — and say clearly when something is a sourcing enquiry.</p>
+                <p>
+                  We confirm what can be supplied before it is promised — and
+                  say clearly when something is a sourcing enquiry.
+                </p>
               </div>
               <div className="card">
                 <span className="card__icon">
                   <Icon name="calendar" strokeWidth={2} />
                 </span>
                 <h3>Long-term</h3>
-                <p>We invest in relationships that support repeat supply for buyers and steady demand for growers.</p>
+                <p>
+                  We invest in relationships that support repeat supply for
+                  buyers and steady demand for growers.
+                </p>
               </div>
             </div>
           </div>
@@ -160,8 +224,13 @@ export function DirectorsPage() {
             <h2 className="h-lg">The UK–Uganda relationship</h2>
             <p className="lead">Our structure mirrors the trade itself.</p>
             <p>
-              Oliver founded Axis Agro in the United Kingdom to connect Uganda&rsquo;s agricultural products with British and international buyers. In Uganda, Micah leads sourcing, supplier
-              relationships, quality coordination and export preparation. Enquiries move between the two every day, so that what we quote reflects what can genuinely be delivered.
+              {SHOW_FOUNDER
+                ? "Oliver founded Axis Agro in the United Kingdom to connect Uganda’s agricultural products with British and international buyers. "
+                : "Axis Agro works with buyers in the United Kingdom and international markets. "}
+              In Uganda, Micah leads sourcing, supplier relationships, quality
+              coordination and export preparation. Enquiries move between the
+              two every day, so that what we quote reflects what can genuinely
+              be delivered.
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -177,13 +246,35 @@ export function DirectorsPage() {
 
       <section className="circles" style={{ padding: "60px 0 80px" }}>
         <div className="wrap">
-          <h2 className="section-title section-title--center">Related company pages</h2>
+          <h2 className="section-title section-title--center">
+            Related company pages
+          </h2>
           <div className="circles__grid" style={{ marginTop: 30 }}>
             {[
-              { href: "/about", icon: "globe" as const, title: "About us", text: "Who we are and what we do." },
-              { href: "/company/our-story", icon: "route" as const, title: "Our story", text: "Why Axis Agro was founded." },
-              { href: "/company/our-values", icon: "shield" as const, title: "Our values", text: "How we work." },
-              { href: "/contact", icon: "mail" as const, title: "Contact", text: "Our contact directory." },
+              {
+                href: "/about",
+                icon: "globe" as const,
+                title: "About us",
+                text: "Who we are and what we do.",
+              },
+              {
+                href: "/company/our-story",
+                icon: "route" as const,
+                title: "Our story",
+                text: "Why Axis Agro was founded.",
+              },
+              {
+                href: "/company/our-values",
+                icon: "shield" as const,
+                title: "Our values",
+                text: "How we work.",
+              },
+              {
+                href: "/contact",
+                icon: "mail" as const,
+                title: "Contact",
+                text: "Our contact directory.",
+              },
             ].map((c) => (
               <Link key={c.href} href={c.href} className="circle-item">
                 <span className="circle-item__img">
@@ -207,7 +298,11 @@ export function DirectorsPage() {
           name: l.name,
           jobTitle: l.short,
           email: `mailto:${l.email}`,
-          worksFor: { "@type": "Organization", name: SITE.legalName, url: SITE.url },
+          worksFor: {
+            "@type": "Organization",
+            name: SITE.legalName,
+            url: SITE.url,
+          },
           url: `${SITE.url}/company/directors/${l.slug}`,
         }))}
       />
@@ -229,7 +324,7 @@ function BioPara({ text, highlight }: { text: string; highlight?: string }) {
 }
 
 export function LeaderProfile({ leader }: { leader: Leader }) {
-  const other = LEADERS.find((l) => l.slug !== leader.slug)!;
+  const other = LEADERS.find((l) => l.slug !== leader.slug);
   const first = leader.name.split(" ")[0];
   const [intro, ...rest] = leader.bio;
   return (
@@ -272,11 +367,18 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
             <h2 className="h-lg">About {first}</h2>
             <p className="lead">{intro}</p>
             {rest.map((b) => (
-              <BioPara key={b.slice(0, 24)} text={b} highlight={leader.highlight} />
+              <BioPara
+                key={b.slice(0, 24)}
+                text={b}
+                highlight={leader.highlight}
+              />
             ))}
           </Reveal>
           <Reveal delay={0.1}>
-            <aside className="facts-panel" aria-label={`${leader.name} at a glance`}>
+            <aside
+              className="facts-panel"
+              aria-label={`${leader.name} at a glance`}
+            >
               <h3>At a glance</h3>
               <dl>
                 {leader.facts.map(([k, v]) => (
@@ -321,7 +423,9 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
       <section className="section section--accent">
         <div className="wrap">
           <div className="cards-box page-box--marker">
-            <h2 className="section-title">{leader.quote ? "What the company is built on" : "Focus areas"}</h2>
+            <h2 className="section-title">
+              {leader.quote ? "What the company is built on" : "Focus areas"}
+            </h2>
             <div className="cards cards--4">
               {leader.values.map((v) => (
                 <div className="card" key={v.title}>
@@ -340,7 +444,9 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
       <section className="section">
         <div className="wrap split split--top">
           <Reveal>
-            <h2 className="h-md text-accent">{leader.listTitle ?? "Areas of responsibility"}</h2>
+            <h2 className="h-md text-accent">
+              {leader.listTitle ?? "Areas of responsibility"}
+            </h2>
             <ul className="ticks">
               {leader.responsibilities.map((r) => (
                 <li key={r}>{r}</li>
@@ -348,7 +454,9 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
             </ul>
           </Reveal>
           <Reveal delay={0.1}>
-            <h2 className="h-md text-accent">{leader.list2Title ?? "Areas of expertise"}</h2>
+            <h2 className="h-md text-accent">
+              {leader.list2Title ?? "Areas of expertise"}
+            </h2>
             <ul className="ticks">
               {leader.expertise.map((r) => (
                 <li key={r}>{r}</li>
@@ -358,29 +466,39 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
         </div>
       </section>
 
-      <section className="section section--grey">
-        <div className="wrap">
-          <h2 className="section-title section-title--center">Also on the leadership team</h2>
-          <div style={{ maxWidth: 760, margin: "30px auto 0" }}>
-            <article className="leader-card">
-              <Portrait leader={other} size={150} />
-              <div>
-                <h3>{other.name}</h3>
-                <p className="leader-card__role">{other.short}</p>
-                <p>{other.summary}</p>
-                <div className="btn-row">
-                  <Link href={`/company/directors/${other.slug}`} className="btn btn--sm">
-                    Read profile
-                  </Link>
-                  <Link href="/company/directors" className="btn btn--sm btn--outline">
-                    All directors
-                  </Link>
+      {other && (
+        <section className="section section--grey">
+          <div className="wrap">
+            <h2 className="section-title section-title--center">
+              Also on the leadership team
+            </h2>
+            <div style={{ maxWidth: 760, margin: "30px auto 0" }}>
+              <article className="leader-card">
+                <Portrait leader={other} size={150} />
+                <div>
+                  <h3>{other.name}</h3>
+                  <p className="leader-card__role">{other.short}</p>
+                  <p>{other.summary}</p>
+                  <div className="btn-row">
+                    <Link
+                      href={`/company/directors/${other.slug}`}
+                      className="btn btn--sm"
+                    >
+                      Read profile
+                    </Link>
+                    <Link
+                      href="/company/directors"
+                      className="btn btn--sm btn--outline"
+                    >
+                      All directors
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       <CtaBand href={`mailto:${leader.email}`} label={`Email ${first}`}>
         &lsquo;Get in touch with {first}&rsquo;
       </CtaBand>
@@ -393,7 +511,11 @@ export function LeaderProfile({ leader }: { leader: Leader }) {
           email: `mailto:${leader.email}`,
           description: leader.summary,
           url: `${SITE.url}/company/directors/${leader.slug}`,
-          worksFor: { "@type": "Organization", name: SITE.legalName, url: SITE.url },
+          worksFor: {
+            "@type": "Organization",
+            name: SITE.legalName,
+            url: SITE.url,
+          },
         }}
       />
     </div>

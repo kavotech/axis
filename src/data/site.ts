@@ -27,7 +27,7 @@ export type Leader = {
   icon: IconName;
 };
 
-export const LEADERS: Leader[] = [
+const ALL_LEADERS: Leader[] = [
   {
     slug: "oliver-alinaitwe",
     name: "Oliver Amanya Alinaitwe",
@@ -118,6 +118,17 @@ export const LEADERS: Leader[] = [
   },
 ];
 
+/**
+ * Leaders temporarily hidden from the whole website (pages, footer, contact
+ * directory, sitemap). Remove a slug from this list to show that person again.
+ */
+export const HIDDEN_LEADERS: string[] = ["oliver-alinaitwe"];
+
+export const LEADERS: Leader[] = ALL_LEADERS.filter((l) => !HIDDEN_LEADERS.includes(l.slug));
+
+/** Whether the Founder (Oliver) and his contact details are shown. */
+export const SHOW_FOUNDER = LEADERS.some((l) => l.slug === "oliver-alinaitwe");
+
 export const SITE = {
   name: "Axis Agro International Ltd",
   legalName: "Axis Agro International Limited",
@@ -152,7 +163,9 @@ export const CONTACT_DIRECTORY: { title: string; email: string; text: string; ic
   { title: "General enquiries", email: SITE.emails.general, text: "Product questions, quotations and anything else.", icon: "mail" },
   { title: "Uganda operations & sourcing", email: SITE.emails.uganda, text: "Suppliers, producers and sourcing in Uganda.", icon: "sourcing" },
   { title: "Logistics & international operations", email: SITE.emails.operations, text: "Shipments, documentation and freight.", icon: "ship" },
-  { title: "Founder", email: SITE.emails.director, text: "Strategic partnerships and senior commercial matters.", icon: "handshake" },
+  ...(SHOW_FOUNDER
+    ? [{ title: "Founder", email: SITE.emails.director, text: "Strategic partnerships and senior commercial matters.", icon: "handshake" as const }]
+    : []),
 ];
 
 export type NavItem = {

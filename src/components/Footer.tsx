@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CATEGORIES } from "@/data/categories";
-import { SITE } from "@/data/site";
+import { SHOW_FOUNDER, SITE } from "@/data/site";
 import { CookieSettingsButton } from "./CookieConsent";
 import { Icon } from "./Icon";
 
@@ -104,11 +104,13 @@ export function Footer() {
                 <br />
                 <a href={`mailto:${SITE.emails.operations}`}>{SITE.emails.operations}</a>
               </li>
-              <li>
-                Founder
-                <br />
-                <a href={`mailto:${SITE.emails.director}`}>{SITE.emails.director}</a>
-              </li>
+              {SHOW_FOUNDER && (
+                <li>
+                  Founder
+                  <br />
+                  <a href={`mailto:${SITE.emails.director}`}>{SITE.emails.director}</a>
+                </li>
+              )}
               <li>
                 T: <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
               </li>
